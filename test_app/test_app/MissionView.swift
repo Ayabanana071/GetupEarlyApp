@@ -61,14 +61,12 @@ struct MissionView: View {
                                 Spacer()
                                 Text("\(friend.score)point").font(.caption2)
                             }
-                            .frame(width: 260, height: 20.0)
                         }
                         .backgroundStyle(.white)
                     }
                 }
                 .compositingGroup()
                 .backgroundStyle(.green.opacity(0.1))
-                .shadow(color: .init(red: 197/255, green: 197/255, blue: 197/255), radius: 3, x: 0, y: 3)
                 .padding()
 
                 
@@ -85,7 +83,6 @@ struct MissionView: View {
                                 Text("\(mission[index].kind)")
                                 Spacer()
                             }
-                            .frame(width: 260.0, height: 20.0)
                         }
                         
                         /// checkedフラグを変更する
@@ -97,7 +94,6 @@ struct MissionView: View {
                 }
                 .compositingGroup()
                 .backgroundStyle(.green.opacity(0.1))
-                .shadow(color: .init(red: 197/255, green: 197/255, blue: 197/255), radius: 3, x: 0, y: 3)
                 .padding()
             }
             .padding()

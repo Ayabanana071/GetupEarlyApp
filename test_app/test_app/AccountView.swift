@@ -21,7 +21,6 @@ struct AccountView: View {
                         .foregroundColor(.gray)
                 }
             }
-            
             Section(header: Text("設定")) {
                 Toggle(isOn: $notificationsEnabled) {
                     Text("通知を有効にする")
