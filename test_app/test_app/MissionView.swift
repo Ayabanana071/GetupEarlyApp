@@ -26,15 +26,11 @@ struct Mission {
 
 struct MissionView: View {
     @State var friends: [Friend] = [
-        Friend(name: "きなひなき", score: 30),
-        Friend(name: "みやびーむ", score: 25),
-        Friend(name: "まえきかりん", score: 10),
-        Friend(name: "あやばなな", score: 15),
-        Friend(name: "あいこ氏", score: 5),
-        Friend(name: "きんじょーこーき", score: 4),
-        Friend(name: "ふなてぃあん", score: 20),
-        Friend(name: "がじゃらいき", score: 10),
-        Friend(name: "ゆいと", score: 22)
+        Friend(name: "山田太郎", score: 30),
+        Friend(name: "村岡花子", score: 25),
+        Friend(name: "五十嵐たいち", score: 10),
+        Friend(name: "山田一郎", score: 15),
+        Friend(name: "島袋愛子", score: 5)
     ]
     
     @State var mission: [Mission] = [
