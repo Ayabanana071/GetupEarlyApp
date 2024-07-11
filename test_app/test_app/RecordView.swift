@@ -45,8 +45,11 @@ struct RecordView: View {
         ScrollView {
             VStack(spacing: 20) {
                 RecordCardView(title: "今週の平均起床時間", data: wakeUpTimes, weekdays: weekdays)
+                    .padding()
                 RecordCardView(title: "今週の平均就寝時間", data: bedTimes, weekdays: weekdays)
+                    .padding()
                 RecordCardView(title: "今週の平均睡眠時間", data: sleepHours, weekdays: weekdays)
+                    .padding()
             }
         }
     }
