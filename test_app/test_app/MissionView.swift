@@ -26,17 +26,17 @@ struct Mission {
 
 struct MissionView: View {
     @State var friends: [Friend] = [
-        Friend(name: "山田太郎", score: 30),
-        Friend(name: "村岡花子", score: 25),
-        Friend(name: "五十嵐たいち", score: 10),
-        Friend(name: "山田一郎", score: 15),
+        Friend(name: "喜納日菜妃", score: 30),
+        Friend(name: "真栄喜楓鈴", score: 25),
+        Friend(name: "津嘉山みやび", score: 10),
+        Friend(name: "岸本志琉", score: 15),
         Friend(name: "島袋愛子", score: 5)
     ]
     
     @State var mission: [Mission] = [
-        Mission("設定した時間に起きる"),
-        Mission("友達と設定した時間に起きる"),
-        Mission("朝のルーチンを達成する")
+        Mission("決めた時間に起きよう"),
+        Mission("友達と同じ時間に起きよう"),
+        Mission("朝と夜のルーチンを達成しよう")
     ]
     
     var body: some View {
@@ -62,8 +62,7 @@ struct MissionView: View {
                     }
                 }
                 .compositingGroup()
-                .backgroundStyle(.green.opacity(0.1))
-                .padding()
+                .backgroundStyle(Color(red: 238/255, green: 240/255, blue: 237/255))                .padding()
 
                 
                 // Weeklyミッション
@@ -89,7 +88,7 @@ struct MissionView: View {
                     .backgroundStyle(.white)
                 }
                 .compositingGroup()
-                .backgroundStyle(.green.opacity(0.1))
+                .backgroundStyle(Color(red: 238/255, green: 240/255, blue: 237/255))
                 .padding()
             }
             .padding()

@@ -52,7 +52,7 @@ struct AlarmTimeView: View {
                     .background(Color(UIColor.white))
                     .cornerRadius(10)
             }
-            .backgroundStyle(.green.opacity(0.1))
+            .backgroundStyle(Color(red: 238/255, green: 240/255, blue: 237/255))
         }
 //        .shadow(color: .init(red: 197/255, green: 197/255, blue: 197/255), radius: 3, x: 0, y: 3)
         .padding()

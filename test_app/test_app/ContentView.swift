@@ -91,7 +91,7 @@ struct Routine: Identifiable {
 
 extension Routine {
     static let sampleData: [Routine] = [
-        Routine(title: "カーテンを開ける", duration: 5),
+        Routine(title: "カーテンを開ける", duration: 1),
         Routine(title: "歯磨き", duration: 5),
         Routine(title: "朝ごはん作る", duration: 10),
         Routine(title: "食事する", duration: 15),

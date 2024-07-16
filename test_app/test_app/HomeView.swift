@@ -69,8 +69,8 @@ struct HomeView: View {
                     }
                 }
             }
+            .backgroundStyle(Color(red: 238/255, green: 240/255, blue: 237/255))
             .buttonStyle(PlainButtonStyle())
-            .backgroundStyle(.green.opacity(0.1))
             .padding()
             
             Spacer()

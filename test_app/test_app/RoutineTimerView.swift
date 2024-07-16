@@ -15,7 +15,7 @@ struct RoutineTimerView: View {
     
     init(routine: [Routine]) {
         self.routine = routine
-        self._remainingTime = State(initialValue: routine.first?.duration ?? 0 * 60) // 秒数に変換
+        self._remainingTime = State(initialValue: (routine.first?.duration ?? 0) * 60)
     }
     
     var body: some View {
@@ -26,27 +26,39 @@ struct RoutineTimerView: View {
                     .padding()
                 
                 GroupBox {
+//                    Spacer()
                     Text(String(format: "%02d:%02d", remainingTime / 60, remainingTime % 60))
                         .font(.system(size: 64))
                         .foregroundColor(.green)
-                        .padding()
+                        .padding(1)
                     
                     HStack {
+                        Spacer()
                         Button(action: startTimer) {
                             Image(systemName: "play.fill")
                                 .foregroundColor(.green)
                         }
                         
+                        ProgressView(value: Double(routine[currentStepIndex].duration * 60 - remainingTime), total: Double(routine[currentStepIndex].duration * 60))
+                            .padding()
+                            .frame(width: 200.0)
+                            .tint(.green)
+                        
+                        
                         Button(action: pauseTimer) {
                             Image(systemName: "pause.fill")
                                 .foregroundColor(.green)
-
+                            
                         }
+                        Spacer()
                     }
                 }
-                .backgroundStyle(.white)
+//                .frame(width: nil, height: 200.0)
+                .backgroundStyle(Color(red: 238/255, green: 240/255, blue: 237/255))
             }
-            .backgroundStyle(.green.opacity(0.1))
+            .backgroundStyle(Color(red: 238/255, green: 240/255, blue: 237/255))
+            .padding()
+            
             
             GroupBox{
                 ForEach(0..<routine.count, id: \.self) { index in
@@ -56,11 +68,11 @@ struct RoutineTimerView: View {
                         Text("\(routine[index].duration)分")
                     }
                     .padding()
-                    .background(index < currentStepIndex ? Color.green : (index == currentStepIndex ? Color.yellow : Color.white))
+                    .background(index < currentStepIndex ? Color.green.opacity(0.5) : (index == currentStepIndex ? Color.yellow.opacity(0.5) : Color.white))
                     .cornerRadius(8)
                 }
             }
-            .backgroundStyle(.green.opacity(0.1))
+            .backgroundStyle(Color(red: 238/255, green: 240/255, blue: 237/255))
             .padding()
         }
         .onDisappear {
@@ -95,7 +107,7 @@ struct RoutineTimerView: View {
 
 #Preview {
     RoutineTimerView(routine: [
-        Routine(title: "歯磨き", duration: 5),
+        Routine(title: "歯磨き", duration: 1),
         Routine(title: "朝ごはん作る", duration: 10),
         Routine(title: "食事する", duration: 15),
         Routine(title: "歯磨き", duration: 5),
