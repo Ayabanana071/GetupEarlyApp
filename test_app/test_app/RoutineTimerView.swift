@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import AVFoundation
 
 struct RoutineTimerView: View {
     var routine: [Routine]
     @State private var currentStepIndex: Int = 0
     @State private var remainingTime: Int
     @State private var timer: Timer?
+    @State private var audioPlayer: AVAudioPlayer?
     
     init(routine: [Routine]) {
         self.routine = routine
@@ -86,6 +88,7 @@ struct RoutineTimerView: View {
             if remainingTime > 0 {
                 remainingTime -= 1
             } else {
+                playSound()
                 moveToNextStep()
             }
         }
@@ -103,6 +106,20 @@ struct RoutineTimerView: View {
             timer?.invalidate()
         }
     }
+    
+    private func playSound() {
+            guard let soundURL = Bundle.main.url(forResource: "alarm", withExtension: "mp3") else {
+                print("Sound file not found.")
+                return
+            }
+            
+            do {
+                audioPlayer = try AVAudioPlayer(contentsOf: soundURL)
+                audioPlayer?.play()
+            } catch {
+                print("Failed to play sound: \(error.localizedDescription)")
+            }
+        }
 }
 
 #Preview {
