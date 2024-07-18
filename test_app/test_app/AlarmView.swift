@@ -42,14 +42,15 @@ struct AlarmTimeView: View {
             GroupBox{
                 Text(title)
                     .font(.title3)
-                    .foregroundColor(Color.green)
+                    .fontWeight(.medium)
+                    .foregroundColor(Color(red: 48/255, green: 178/255, blue: 127/255))
                 
                 Text(formattedTime(from: time))
                     .font(.system(size: 64))
-                    .foregroundColor(.green)
+                    .foregroundColor(Color(red: 48/255, green: 178/255, blue: 127/255))
                     .padding()
                     .frame(maxWidth: .infinity)
-                    .background(Color(UIColor.white))
+                    .background(Color(red: 238/255, green: 240/255, blue: 237/255))
                     .cornerRadius(10)
             }
             .backgroundStyle(Color(red: 238/255, green: 240/255, blue: 237/255))

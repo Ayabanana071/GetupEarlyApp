@@ -18,6 +18,10 @@ struct ContentView: View {
         UITabBar.appearance().backgroundColor
         = UIColor(red: 200/255, green: 236/255, blue: 195/255, alpha: 1)
         UITabBar.appearance().unselectedItemTintColor = .lightGray
+        
+        let navigationBarAppearance = UINavigationBarAppearance()
+        navigationBarAppearance.titleTextAttributes = [.foregroundColor: Color(red: 48/255, green: 178/255, blue: 127/255)]
+        
     }
     
     var body: some View {
@@ -43,6 +47,7 @@ struct ContentView: View {
                         self.isEditing.toggle()
                     }) {
                         Text("編集")
+                            .foregroundColor(Color(red: 48/255, green: 178/255, blue: 127/255))
                     })
             }
             .tabItem { Label("Alarm", systemImage: "alarm") }

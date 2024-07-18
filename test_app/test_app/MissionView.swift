@@ -45,6 +45,8 @@ struct MissionView: View {
                 // ランキングボックス
                 GroupBox {
                     Text("ランキング")
+                        .foregroundColor(Color(red: 48/255, green: 178/255, blue: 127/255))
+                        .fontWeight(.medium)
                         .font(.title3)
                     
                     ForEach(Array(sortedFriends.enumerated()), id: \.element.name) { index, friend in
@@ -68,6 +70,8 @@ struct MissionView: View {
                 // Weeklyミッション
                 GroupBox {
                     Text("ミッション")
+                        .foregroundColor(Color(red: 48/255, green: 178/255, blue: 127/255))
+                        .fontWeight(.medium)
                         .font(.title3)
                     
                     ForEach(0..<mission.count, id: \.self) { index in

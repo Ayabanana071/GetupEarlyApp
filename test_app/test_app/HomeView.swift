@@ -30,7 +30,7 @@ struct HomeView: View {
         VStack {
             Text(dateText.isEmpty ? "\(dateFormatter.string(from: nowDate))" : dateText)
                 .font(.system(size: 64))
-                .foregroundColor(.green)
+                .foregroundColor(Color(red: 48/255, green: 178/255, blue: 127/255))
                 .onAppear {
                     Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
                         self.nowDate = Date()
@@ -49,6 +49,8 @@ struct HomeView: View {
             
             GroupBox {
                 Text("朝のルーチン")
+                    .fontWeight(.medium)
+                    .foregroundColor(Color(red: 48/255, green: 178/255, blue: 127/255))
 //                    .font(.headline)
                 
                 ForEach(routines) { routine in
@@ -77,6 +79,7 @@ struct HomeView: View {
         }
         .sheet(isPresented: $showRoutineTimer) {
             RoutineTimerView(routine: routines)
+                .presentationDragIndicator(.visible)
         }
     }
 }
