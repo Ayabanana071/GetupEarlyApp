@@ -27,59 +27,61 @@ struct HomeView: View {
     }
     
     var body: some View {
-        VStack {
-            Text(dateText.isEmpty ? "\(dateFormatter.string(from: nowDate))" : dateText)
-                .font(.system(size: 64))
-                .foregroundColor(Color(red: 48/255, green: 178/255, blue: 127/255))
-                .onAppear {
-                    Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-                        self.nowDate = Date()
-                        dateText = "\(dateFormatter.string(from: nowDate))"
-                    }
-                }
-                .padding(.top, 60)
-            
-            Text("☀️起床時間 : \(dateFormatter.string(from: wakeUpTime))")
-                .font(.title2)
-                .foregroundColor(.gray)
- 
-            Text("🌙就寝時間 : \(dateFormatter.string(from: bedTime))")
-                .font(.title2)
-                .foregroundColor(.gray)
-            
-            GroupBox {
-                Text("朝のルーチン")
-                    .fontWeight(.medium)
+        ScrollView{
+            VStack {
+                Text(dateText.isEmpty ? "\(dateFormatter.string(from: nowDate))" : dateText)
+                    .font(.system(size: 64))
                     .foregroundColor(Color(red: 48/255, green: 178/255, blue: 127/255))
-//                    .font(.headline)
-                
-                ForEach(routines) { routine in
-                    Button(action: {
-                        showRoutineTimer = true
-                    }) {
-                        HStack {
-                            Text(routine.title)
-                            Spacer()
-                            Text("\(routine.duration)分")
+                    .onAppear {
+                        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+                            self.nowDate = Date()
+                            dateText = "\(dateFormatter.string(from: nowDate))"
                         }
-                        .padding()
-                        .background(Color.white)
-                        .cornerRadius(8)
-//                        .shadow(color: .gray.opacity(0.5), radius: 2, x: 0, y: 2)
-                        .padding(.horizontal)
-                        .padding(.vertical, 2)
+                    }
+                    .padding(.top, 60)
+                
+                Text("☀️起床時間 : \(dateFormatter.string(from: wakeUpTime))")
+                    .font(.title2)
+                    .foregroundColor(.gray)
+     
+                Text("🌙就寝時間 : \(dateFormatter.string(from: bedTime))")
+                    .font(.title2)
+                    .foregroundColor(.gray)
+                
+                GroupBox {
+                    Text("朝のルーチン")
+                        .fontWeight(.medium)
+                        .foregroundColor(Color(red: 48/255, green: 178/255, blue: 127/255))
+    //                    .font(.headline)
+                    
+                    ForEach(routines) { routine in
+                        Button(action: {
+                            showRoutineTimer = true
+                        }) {
+                            HStack {
+                                Text(routine.title)
+                                Spacer()
+                                Text("\(routine.duration)分")
+                            }
+                            .padding()
+                            .background(Color.white)
+                            .cornerRadius(8)
+    //                        .shadow(color: .gray.opacity(0.5), radius: 2, x: 0, y: 2)
+                            .padding(.horizontal)
+                            .padding(.vertical, 2)
+                        }
                     }
                 }
+                .backgroundStyle(Color(red: 238/255, green: 240/255, blue: 237/255))
+                .buttonStyle(PlainButtonStyle())
+                .padding()
+                
+                Spacer()
             }
-            .backgroundStyle(Color(red: 238/255, green: 240/255, blue: 237/255))
-            .buttonStyle(PlainButtonStyle())
-            .padding()
-            
-            Spacer()
-        }
-        .sheet(isPresented: $showRoutineTimer) {
-            RoutineTimerView(routine: routines)
-                .presentationDragIndicator(.visible)
+            .sheet(isPresented: $showRoutineTimer) {
+                RoutineTimerView(routine: routines)
+                    .presentationDragIndicator(.visible)
+            }
         }
     }
 }
