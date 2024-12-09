@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var isLogin = false
+    
     @State var selectedTag = 1
     @State private var isEditing: Bool = false
     @State private var wakeUpTime: Date = Calendar.current.date(bySettingHour: 7, minute: 0, second: 0, of: Date())!
@@ -25,66 +27,81 @@ struct ContentView: View {
     }
     
     var body: some View {
-        TabView(selection: $selectedTag) {
-            
-            NavigationStack {
-                FriendView()
-                    .navigationTitle("フレンド")
-                    .navigationBarTitleDisplayMode(.inline)
-                    .toolbarBackground(.visible, for: .navigationBar)
-                    .toolbarBackground(.green.opacity(0.4), for: .navigationBar)
-            }
-            .tabItem { Label("Friend", systemImage: "person.2") }
-            .tag(4)
-            
-            NavigationStack {
-                AlarmView(isEditing: $isEditing, wakeUpTime: $wakeUpTime, bedTime: $bedTime)
-                    .navigationTitle("アラーム")
-                    .navigationBarTitleDisplayMode(.inline)
-                    .toolbarBackground(.visible, for: .navigationBar)
-                    .toolbarBackground(.green.opacity(0.4), for: .navigationBar)
-                    .navigationBarItems(trailing: Button(action: {
-                        self.isEditing.toggle()
-                    }) {
-                        Text("編集")
-                            .foregroundColor(Color(red: 48/255, green: 178/255, blue: 127/255))
-                    })
-            }
-            .tabItem { Label("Alarm", systemImage: "alarm") }
-            .tag(2)
-            
-            NavigationStack {
-                HomeView(wakeUpTime: $wakeUpTime, bedTime: $bedTime, routines: $routines)
-                    .navigationTitle("ホーム")
-                    .navigationBarTitleDisplayMode(.inline)
-                    .toolbarBackground(.visible, for: .navigationBar)
-                    .toolbarBackground(.green.opacity(0.4), for: .navigationBar)
-            }
-            .tabItem { Label("Home", systemImage: "house") }
-            .tag(1)
-            
-            NavigationStack {
-                MissionView()
-                    .navigationTitle("ミッション")
-                    .navigationBarTitleDisplayMode(.inline)
-                    .toolbarBackground(.visible, for: .navigationBar)
-                    .toolbarBackground(.green.opacity(0.4), for: .navigationBar)
-            }
-            .tabItem { Label("Mission", systemImage: "trophy") }
-            .tag(3)
-            
-            NavigationStack {
-                AccountView()
-                    .navigationTitle("アカウント")
-                    .navigationBarTitleDisplayMode(.inline)
-                    .toolbarBackground(.visible, for: .navigationBar)
-                    .toolbarBackground(.green.opacity(0.4), for: .navigationBar)
-            }
-            .tabItem { Label("Account", systemImage: "person.circle") }
-            .tag(5)
-            
+        if (!isLogin) {
+            LoginView(isLogin: $isLogin)
         }
-        .accentColor(.green)
+        else {
+            TabView(selection: $selectedTag) {
+                
+                NavigationStack {
+                    FriendView()
+                        .navigationTitle("フレンド")
+                        .navigationBarTitleDisplayMode(.inline)
+                        .toolbarBackground(.visible, for: .navigationBar)
+                        .toolbarBackground(.green.opacity(0.4), for: .navigationBar)
+                }
+                .tabItem { Label("Friend", systemImage: "person.2") }
+                .tag(4)
+                
+                NavigationStack {
+                    AlarmView(isEditing: $isEditing, wakeUpTime: $wakeUpTime, bedTime: $bedTime)
+                        .navigationTitle("アラーム")
+                        .navigationBarTitleDisplayMode(.inline)
+                        .toolbarBackground(.visible, for: .navigationBar)
+                        .toolbarBackground(.green.opacity(0.4), for: .navigationBar)
+                        .navigationBarItems(trailing: Button(action: {
+                            self.isEditing.toggle()
+                        }) {
+                            Text("編集")
+                                .foregroundColor(Color(red: 48/255, green: 178/255, blue: 127/255))
+                        })
+                }
+                .tabItem { Label("Alarm", systemImage: "alarm") }
+                .tag(2)
+                
+                NavigationStack {
+                    HomeView(wakeUpTime: $wakeUpTime, bedTime: $bedTime, routines: $routines)
+                        .navigationTitle("ホーム")
+                        .navigationBarTitleDisplayMode(.inline)
+                        .toolbarBackground(.visible, for: .navigationBar)
+                        .toolbarBackground(.green.opacity(0.4), for: .navigationBar)
+                }
+                .tabItem { Label("Home", systemImage: "house") }
+                .tag(1)
+                
+                NavigationStack {
+                    MissionView()
+                        .navigationTitle("ミッション")
+                        .navigationBarTitleDisplayMode(.inline)
+                        .toolbarBackground(.visible, for: .navigationBar)
+                        .toolbarBackground(.green.opacity(0.4), for: .navigationBar)
+                }
+                .tabItem { Label("Mission", systemImage: "trophy") }
+                .tag(3)
+                
+                NavigationStack {
+                    AccountView()
+                        .navigationTitle("アカウント")
+                        .navigationBarTitleDisplayMode(.inline)
+                        .toolbarBackground(.visible, for: .navigationBar)
+                        .toolbarBackground(.green.opacity(0.4), for: .navigationBar)
+                }
+                .tabItem { Label("Account", systemImage: "person.circle") }
+                .tag(5)
+                
+            }
+            .onAppear {
+                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+                    if granted {
+                        print("通知が許可されました")
+                    } else {
+                        print("通知が拒否されました")
+                    }
+                }
+            }
+            .accentColor(.green)
+        }
+
     }
 }
 
