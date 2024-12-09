@@ -27,11 +27,11 @@ struct LoginView: View {
                 }
                 TextField("名前", text: $name)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
+                    .padding(.horizontal)
 
                 SecureField("パスワード", text: $password)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
+                    .padding(.horizontal)
 
                 Button("ログイン") {
                     login()
@@ -53,7 +53,7 @@ struct LoginView: View {
                     Text("アカウントをお持ちでない方→")
                         .font(.system(size: 15))
 
-                    NavigationLink(destination: SignupView()) {
+                    NavigationLink(destination: SignupView(isLogin: $isLogin)) {
                         Text("サインアップ")
                             .foregroundColor(Color(red: 48/255, green: 178/255, blue: 127/255))
                             .underline()

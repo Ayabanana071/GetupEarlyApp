@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct SignupView: View {
+    @Binding var isLogin: Bool
+    
     @State private var name = ""
     @State private var password = ""
     @State private var passwordConfirmation = ""
@@ -16,7 +18,6 @@ struct SignupView: View {
 
     var body: some View {
         VStack(spacing: 20) {
-            Spacer()
             HStack {
                 Spacer()
                 Text("Signup")
@@ -26,15 +27,15 @@ struct SignupView: View {
             }
             TextField("名前", text: $name)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
+                .padding(.horizontal)
 
             SecureField("パスワード", text: $password)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
+                .padding(.horizontal)
 
             SecureField("パスワード（確認用）", text: $passwordConfirmation)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
+                .padding(.horizontal)
 
             Button("新規登録") {
                 signup()
@@ -54,8 +55,8 @@ struct SignupView: View {
                 Text(successMessage)
                     .foregroundColor(.green)
             }
-            Spacer()
         }
+        .padding(.bottom, 80.0)
         .padding()
     }
 
@@ -86,6 +87,7 @@ struct SignupView: View {
                     name = ""
                     password = ""
                     passwordConfirmation = ""
+                    isLogin = true
                 }
             } else {
                 DispatchQueue.main.async {
@@ -103,5 +105,6 @@ struct SignupView: View {
 
 
 #Preview {
-    SignupView()
+    @State var isLoginPreview = false
+    return SignupView(isLogin: $isLoginPreview)
 }
