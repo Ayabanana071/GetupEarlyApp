@@ -17,7 +17,6 @@ struct LoginView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 20) {
-                Spacer()
                 HStack {
                     Spacer()
                     Text("Login")
@@ -60,7 +59,6 @@ struct LoginView: View {
                     }
                 }
                 .padding()
-                Spacer()
             }
             .padding()
         }
@@ -80,14 +78,22 @@ struct LoginView: View {
             guard let data = data else { return }
             DispatchQueue.main.async {
                 if let response = response as? HTTPURLResponse, response.statusCode == 200 {
-                    print("ログイン成功: \(String(data: data, encoding: .utf8) ?? "")")
-                    isLogin = true
+                    do {
+                        if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                           let token = json["token"] as? String {
+                            UserDefaults.standard.set(token, forKey: "userToken") // トークン保存
+                            isLogin = true
+                        }
+                    } catch {
+                        errorMessage = "データ解析エラー"
+                    }
                 } else {
                     errorMessage = "ログイン失敗: 名前またはパスワードが正しくありません"
                 }
             }
         }.resume()
     }
+
 }
 
 

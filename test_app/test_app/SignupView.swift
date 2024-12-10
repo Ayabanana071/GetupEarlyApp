@@ -15,6 +15,8 @@ struct SignupView: View {
     @State private var passwordConfirmation = ""
     @State private var errorMessage = ""
     @State private var successMessage = ""
+    
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
 
     var body: some View {
         VStack(spacing: 20) {
@@ -87,7 +89,8 @@ struct SignupView: View {
                     name = ""
                     password = ""
                     passwordConfirmation = ""
-                    isLogin = true
+                    isLogin = false
+                    self.presentationMode.wrappedValue.dismiss()
                 }
             } else {
                 DispatchQueue.main.async {
