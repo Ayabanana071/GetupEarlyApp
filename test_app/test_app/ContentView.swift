@@ -80,7 +80,7 @@ struct ContentView: View {
                 .tag(3)
                 
                 NavigationStack {
-                    AccountView()
+                    AccountView(isLogin: $isLogin)
                         .navigationTitle("アカウント")
                         .navigationBarTitleDisplayMode(.inline)
                         .toolbarBackground(.visible, for: .navigationBar)
