@@ -24,6 +24,7 @@
 		C44DB31A2BE20A830063F284 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C44DB3192BE20A830063F284 /* Preview Assets.xcassets */; };
 		C497B8202D06055A00B7AFCB /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C497B81F2D06055A00B7AFCB /* SignupView.swift */; };
 		C497B8242D063B4000B7AFCB /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C497B8232D063B4000B7AFCB /* UserModel.swift */; };
+		C497B8262D085B6900B7AFCB /* AddFriendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C497B8252D085B6900B7AFCB /* AddFriendView.swift */; };
 		C4BE408D2BF5144500BB58F6 /* AlarmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4BE408C2BF5144500BB58F6 /* AlarmView.swift */; };
 /* End PBXBuildFile section */
 
@@ -46,6 +47,7 @@
 		C44DB3192BE20A830063F284 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C497B81F2D06055A00B7AFCB /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
 		C497B8232D063B4000B7AFCB /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
+		C497B8252D085B6900B7AFCB /* AddFriendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendView.swift; sourceTree = "<group>"; };
 		C4BE408C2BF5144500BB58F6 /* AlarmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -83,6 +85,7 @@
 				C44DB3142BE20A820063F284 /* ContentView.swift */,
 				C41BA3932D001D500035A88E /* LoginView.swift */,
 				C497B81F2D06055A00B7AFCB /* SignupView.swift */,
+				C497B8252D085B6900B7AFCB /* AddFriendView.swift */,
 				C42C8DBA2C3774D5004B8ADC /* RoutineTimerView.swift */,
 				C40837A72BFF518F00B7FF3B /* FriendView.swift */,
 				C4BE408C2BF5144500BB58F6 /* AlarmView.swift */,
@@ -190,6 +193,7 @@
 				C40837A42BFF4EEB00B7FF3B /* AccountView.swift in Sources */,
 				C42C8DBB2C3774D5004B8ADC /* RoutineTimerView.swift in Sources */,
 				C497B8202D06055A00B7AFCB /* SignupView.swift in Sources */,
+				C497B8262D085B6900B7AFCB /* AddFriendView.swift in Sources */,
 				C40837A62BFF515600B7FF3B /* MissionView.swift in Sources */,
 				C41BA3942D001D510035A88E /* LoginView.swift in Sources */,
 				C4461C942C0C48C700E15E26 /* EditAlarmView.swift in Sources */,

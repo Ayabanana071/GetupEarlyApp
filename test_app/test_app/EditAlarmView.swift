@@ -30,6 +30,13 @@ struct EditAlarmView: View {
                 }
             }
             .navigationBarTitle("アラーム編集", displayMode: .inline)
+            .toolbar { ToolbarItem(placement: .principal) {
+                Text("アラーム編集")
+                    .fontWeight(.medium)
+                    .foregroundColor(Color("MainColor"))
+                    .font(.system(size: 18))
+                }
+            }
             .navigationBarItems(trailing: Button("完了") {
                 UNUserNotificationCenter.current().removeAllPendingNotificationRequests() // 以前の通知をキャンセル
                 scheduleNotification(at: wakeUpTime) // 起床時間に通知をスケジュール

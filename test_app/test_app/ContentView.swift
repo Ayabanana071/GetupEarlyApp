@@ -35,7 +35,13 @@ struct ContentView: View {
                 
                 NavigationStack {
                     FriendView()
-                        .navigationTitle("フレンド")
+                        .toolbar {
+                            ToolbarItem(placement: .principal) {
+                                Text("フレンド")
+                                    .font(.headline)
+                                    .foregroundColor(Color("MainColor"))
+                            }
+                        }
                         .navigationBarTitleDisplayMode(.inline)
                         .toolbarBackground(.visible, for: .navigationBar)
                         .toolbarBackground(.green.opacity(0.4), for: .navigationBar)
@@ -45,7 +51,13 @@ struct ContentView: View {
                 
                 NavigationStack {
                     AlarmView(isEditing: $isEditing, wakeUpTime: $wakeUpTime, bedTime: $bedTime)
-                        .navigationTitle("アラーム")
+                        .toolbar {
+                            ToolbarItem(placement: .principal) {
+                                Text("アラーム")
+                                    .font(.headline)
+                                    .foregroundColor(Color("MainColor"))
+                            }
+                        }
                         .navigationBarTitleDisplayMode(.inline)
                         .toolbarBackground(.visible, for: .navigationBar)
                         .toolbarBackground(.green.opacity(0.4), for: .navigationBar)
@@ -61,7 +73,13 @@ struct ContentView: View {
                 
                 NavigationStack {
                     HomeView(wakeUpTime: $wakeUpTime, bedTime: $bedTime, routines: $routines)
-                        .navigationTitle("ホーム")
+                        .toolbar {
+                            ToolbarItem(placement: .principal) {
+                                Text("ホーム")
+                                    .font(.headline)
+                                    .foregroundColor(Color("MainColor"))
+                            }
+                        }
                         .navigationBarTitleDisplayMode(.inline)
                         .toolbarBackground(.visible, for: .navigationBar)
                         .toolbarBackground(.green.opacity(0.4), for: .navigationBar)
@@ -71,7 +89,13 @@ struct ContentView: View {
                 
                 NavigationStack {
                     MissionView()
-                        .navigationTitle("ミッション")
+                        .toolbar {
+                            ToolbarItem(placement: .principal) {
+                                Text("ミッション")
+                                    .font(.headline)
+                                    .foregroundColor(Color("MainColor"))
+                            }
+                        }
                         .navigationBarTitleDisplayMode(.inline)
                         .toolbarBackground(.visible, for: .navigationBar)
                         .toolbarBackground(.green.opacity(0.4), for: .navigationBar)
@@ -81,7 +105,13 @@ struct ContentView: View {
                 
                 NavigationStack {
                     AccountView(isLogin: $isLogin)
-                        .navigationTitle("アカウント")
+                        .toolbar {
+                            ToolbarItem(placement: .principal) {
+                                Text("アカウント")
+                                    .font(.headline)
+                                    .foregroundColor(Color("MainColor"))
+                            }
+                        }
                         .navigationBarTitleDisplayMode(.inline)
                         .toolbarBackground(.visible, for: .navigationBar)
                         .toolbarBackground(.green.opacity(0.4), for: .navigationBar)
@@ -99,7 +129,7 @@ struct ContentView: View {
                     }
                 }
             }
-            .accentColor(.green)
+            .accentColor(.accentColor)
         }
 
     }
