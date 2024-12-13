@@ -18,7 +18,7 @@ struct HomeView: View {
     @Binding var bedTime: Date
     @Binding var routines: [Routine]
     
-    var point: CGFloat = 30
+    var point: CGFloat = 100
     
     init(wakeUpTime: Binding<Date>, bedTime: Binding<Date>, routines: Binding<[Routine]>) {
         _wakeUpTime = wakeUpTime
@@ -78,22 +78,38 @@ struct HomeView: View {
                     .backgroundStyle(.white)
                     
                     GroupBox{
-                        ZStack{
-                            VStack{
-                                Spacer()
-                                HStack{
+                        ScrollView([.vertical, .horizontal]){
+                            ZStack{
+                                AqourBallView()
+                                VStack{
                                     Spacer()
-                                    Circle()
-                                        .fill(Color("MainColor"))
-                                        .frame(width: point)
-                                    Spacer()
+                                    HStack{
+                                        Spacer()
+                                        Circle()
+                                            .stroke(
+                                                Color.accentColor,
+                                                style:
+                                                 StrokeStyle(
+                                                     lineWidth: 2,
+                                                     dash: [3, 3, 3, 3]
+                                             )
+                                            )
+                                            .overlay(
+                                                Image("MarimoFace")
+                                                    .resizable()
+                                                    .scaledToFill()
+                                            )
+                                            .frame(width: point)
+                                            .padding()
+                                        Spacer()
+                                    }
                                 }
-
                             }
                         }
                     }
-                    .frame(height: 200.0)
-                    .backgroundStyle(.white)
+                    .frame(width: 300, height: 200)
+                    .backgroundStyle(Color("AqourColor"))
+                    .cornerRadius(5)
                 }
                 .backgroundStyle(Color(red: 238/255, green: 240/255, blue: 237/255))
                 .buttonStyle(PlainButtonStyle())
