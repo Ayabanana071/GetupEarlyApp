@@ -18,6 +18,8 @@ struct HomeView: View {
     @Binding var bedTime: Date
     @Binding var routines: [Routine]
     
+    var point: CGFloat = 100
+    
     init(wakeUpTime: Binding<Date>, bedTime: Binding<Date>, routines: Binding<[Routine]>) {
         _wakeUpTime = wakeUpTime
         _bedTime = bedTime
@@ -40,13 +42,78 @@ struct HomeView: View {
                     }
                     .padding(.top, 60)
                 
-                Text("☀️起床時間 : \(dateFormatter.string(from: wakeUpTime))")
-                    .font(.title2)
-                    .foregroundColor(.gray)
-     
-                Text("🌙就寝時間 : \(dateFormatter.string(from: bedTime))")
-                    .font(.title2)
-                    .foregroundColor(.gray)
+                HStack{
+                    Image(systemName: "sun.max.fill")
+                        .foregroundStyle(.yellow)
+                        .symbolRenderingMode(.multicolor)
+                    Text("起床時間 : \(dateFormatter.string(from: wakeUpTime))")
+                        .font(.title2)
+                        .foregroundColor(.gray)
+                    Image(systemName: "sun.max.fill")
+                        .foregroundStyle(.yellow)
+                        .symbolRenderingMode(.multicolor)
+                }
+                HStack{
+                    Image(systemName: "moon.stars.fill")
+                        .foregroundStyle(.yellow)
+                    Text("就寝時間 : \(dateFormatter.string(from: bedTime))")
+                        .font(.title2)
+                        .foregroundColor(.gray)
+                    Image(systemName: "moon.stars.fill")
+                        .foregroundStyle(.yellow)
+                }
+                
+                GroupBox{
+                    Text("まりも")
+                        .fontWeight(.medium)
+                        .foregroundColor(Color(red: 48/255, green: 178/255, blue: 127/255))
+                    
+                    GroupBox{
+                        HStack{
+                            Text("大きさ")
+                            Spacer()
+                            Text("\(Int(point))mm")
+                        }
+                    }
+                    .backgroundStyle(.white)
+                    
+                    GroupBox{
+                        ScrollView([.vertical, .horizontal]){
+                            ZStack{
+                                AqourBallView()
+                                VStack{
+                                    Spacer()
+                                    HStack{
+                                        Spacer()
+                                        Circle()
+                                            .stroke(
+                                                Color.accentColor,
+                                                style:
+                                                 StrokeStyle(
+                                                     lineWidth: 2,
+                                                     dash: [3, 3, 3, 3]
+                                             )
+                                            )
+                                            .overlay(
+                                                Image("MarimoFace")
+                                                    .resizable()
+                                                    .scaledToFill()
+                                            )
+                                            .frame(width: point)
+                                            .padding()
+                                        Spacer()
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    .frame(width: 300, height: 200)
+                    .backgroundStyle(Color("AqourColor"))
+                    .cornerRadius(5)
+                }
+                .backgroundStyle(Color(red: 238/255, green: 240/255, blue: 237/255))
+                .buttonStyle(PlainButtonStyle())
+                .padding()
                 
                 GroupBox {
                     Text("朝のルーチン")
@@ -67,17 +134,18 @@ struct HomeView: View {
                             .background(Color.white)
                             .cornerRadius(8)
     //                        .shadow(color: .gray.opacity(0.5), radius: 2, x: 0, y: 2)
-                            .padding(.horizontal)
-                            .padding(.vertical, 2)
+//                            .padding(.horizontal)
+//                            .padding(.vertical, 2)
                         }
                     }
                 }
                 .backgroundStyle(Color(red: 238/255, green: 240/255, blue: 237/255))
                 .buttonStyle(PlainButtonStyle())
-                .padding()
+                .padding([.leading, .bottom, .trailing])
                 
                 Spacer()
             }
+            .padding([.leading, .bottom, .trailing])
             .sheet(isPresented: $showRoutineTimer) {
                 RoutineTimerView(routine: routines)
                     .presentationDragIndicator(.visible)
