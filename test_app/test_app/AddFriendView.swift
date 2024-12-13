@@ -27,21 +27,42 @@ struct AddFriendView: View {
                 List(searchResults, id: \.id) { user in
                     HStack {
                         Text(user.name)
+                            .foregroundColor(.accentColor)
+                            .fontWeight(.semibold)
+                            .padding()
                         Spacer()
-                        Button("追加") {
+                        Button("+") {
                             print("フレンドを追加ボタンを押した")
                             addFriend(user: user)
                         }
-                        .foregroundColor(.blue)
+                        .foregroundColor(.accentColor)
+                        .font(Font.system(size: 30))
+                        .fontWeight(.medium)
+                        
                     }
+                    .background(Color.white.opacity(0.3))
+                    .cornerRadius(5)
+                    .listRowBackground(Color.white)
                 }
+                .listStyle(.plain)
+                .listRowSeparatorTint(Color("MainColor"))
 
                 Spacer()
             }
-            .navigationTitle("フレンド追加")
-            .toolbar {
+            //常時背景色を適用
+            .toolbarBackground(.visible, for: .navigationBar)
+            //背景色をグリーンにする
+            .toolbarBackground(.green.opacity(0.3),for: .navigationBar)
+            .navigationBarTitle("フレンド追加", displayMode: .inline)
+            .toolbar {            
+                ToolbarItem(placement: .principal) {
+                Text("フレンド追加")
+                    .font(.headline)
+                    .foregroundColor(Color("MainColor"))
+                    .font(.system(size: 18))
+            }
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("キャンセル") {
+                    Button("完了") {
                         isPresented = false
                     }
                 }

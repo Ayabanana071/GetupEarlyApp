@@ -54,7 +54,7 @@ struct AccountView: View {
                         }
                         .backgroundStyle(.white)
                     }
-                    .padding()
+                    .padding([.leading, .bottom, .trailing])
                     .backgroundStyle(Color(red: 238/255, green: 240/255, blue: 237/255))
                 }
                 
@@ -71,11 +71,12 @@ struct AccountView: View {
                     }
                     .backgroundStyle(.white)
                 }
-                .padding()
+                .padding([.leading, .bottom, .trailing])
                 .backgroundStyle(Color(red: 238/255, green: 240/255, blue: 237/255))
 
                 
             }
+            .padding()
             .onAppear {
                 fetchUserData()
             }

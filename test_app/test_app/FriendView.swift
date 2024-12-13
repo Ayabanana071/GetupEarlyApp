@@ -13,18 +13,42 @@ struct FriendView: View {
     @State private var errorMessage: String? = nil // エラーメッセージ用
 
     var body: some View {
-        NavigationView {
+        ZStack{
             VStack {
                 List(friends, id: \.id) { friend in
-                    Text(friend.name)
+                    HStack{
+                        Image(systemName: "person.crop.circle")
+                            .font(.system(size: 40))
+                            .foregroundColor(Color("AccentColor").opacity(0.3))
+                        Text(friend.name)
+                            .foregroundColor(Color("AccentColor"))
+                            .fontWeight(.semibold)
+                            .padding()
+                    }
+                    .background(Color.white.opacity(0.3))
+                    .cornerRadius(5)
+                    .listRowBackground(Color.white)
                 }
                 .onAppear(perform: fetchFriends)
-
-                Button("フレンド追加") {
-                    isAddingFriend = true
-                }
-                .sheet(isPresented: $isAddingFriend) {
-                    AddFriendView(isPresented: $isAddingFriend)
+                .listStyle(.plain)
+                .listRowSeparatorTint(Color("MainColor"))
+            }
+            VStack{
+                Spacer()
+                HStack{
+                    Spacer()
+                    Button(action: {
+                        print("Button")
+                        isAddingFriend = true
+                    }) {
+                        Image(systemName: "plus.circle.fill")
+                            .font(.system(size: 50))
+                            .padding()
+                            .foregroundColor(Color("AccentColor"))
+                    }
+                    .sheet(isPresented: $isAddingFriend) {
+                        AddFriendView(isPresented: $isAddingFriend)
+                    }
                 }
             }
         }
