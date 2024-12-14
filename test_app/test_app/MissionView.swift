@@ -13,18 +13,14 @@ struct Friend {
 }
 
 struct Mission {
-    var checked: Bool
     var kind: String
-    var mission_count: Int
-    
-    init(_ kind: String) {
-        self.checked = false
-        self.kind = kind
-        self.mission_count = 0
-    }
+    var checked: Bool
+    var points: Int // 各ミッションに関連するポイント
 }
 
 struct MissionView: View {
+    @StateObject private var pointViewModel = PointViewModel()
+    
     @State var friends: [Friend] = [
         Friend(name: "喜納日菜妃", score: 30),
         Friend(name: "真栄喜楓鈴", score: 25),
@@ -33,11 +29,12 @@ struct MissionView: View {
         Friend(name: "島袋愛子", score: 5)
     ]
     
-    @State var mission: [Mission] = [
-        Mission("決めた時間に起きよう"),
-        Mission("友達と同じ時間に起きよう"),
-        Mission("朝と夜のルーチンを達成しよう")
+    @State private var mission: [Mission] = [
+        Mission(kind: "決めた時間に起きよう", checked: false, points: 10),
+        Mission(kind: "友達と同じ時間に起きよう", checked: false, points: 20),
+        Mission(kind: "朝と夜のルーチンを達成しよう", checked: false, points: 30)
     ]
+    @State private var totalPoints: Int = 0 // 合計ポイント
     
     var body: some View {
         ScrollView(.vertical){
@@ -75,7 +72,6 @@ struct MissionView: View {
                         .font(.title3)
                     
                     ForEach(0..<mission.count, id: \.self) { index in
-                        
                         GroupBox {
                             HStack {
                                 Image(systemName: mission[index].checked ? "checkmark.circle.fill" : "circle")
@@ -83,13 +79,22 @@ struct MissionView: View {
                                 Spacer()
                             }
                         }
-                        
-                        /// checkedフラグを変更する
                         .onTapGesture {
+                            // チェックフラグを切り替える
                             mission[index].checked.toggle()
+
+                            // ポイントを加算または減算
+                            if mission[index].checked {
+                                totalPoints += mission[index].points
+                                pointViewModel.createPointRecord(points: mission[index].points) // ポイントを送信
+                            } else {
+                                totalPoints -= mission[index].points
+                                pointViewModel.createPointRecord(points: -mission[index].points) // 減算の場合はマイナスの値を送信
+                            }
                         }
+                        .backgroundStyle(.white)
                     }
-                    .backgroundStyle(.white)
+                    .backgroundStyle(Color(red: 238/255, green: 240/255, blue: 237/255))
                 }
                 .compositingGroup()
                 .backgroundStyle(Color(red: 238/255, green: 240/255, blue: 237/255))
