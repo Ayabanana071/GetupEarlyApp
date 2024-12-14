@@ -13,7 +13,8 @@ struct RoutineTimerView: View {
     @State private var currentStepIndex: Int = 0
     @State private var remainingTime: Int
     @State private var timer: Timer?
-    @State private var audioPlayer: AVAudioPlayer?
+    
+    let soundPlayer = SoundPlayer()
     
     init(routine: [Routine]) {
         self.routine = routine
@@ -91,10 +92,12 @@ struct RoutineTimerView: View {
     private func startTimer() {
         timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-            if remainingTime > 0 {
+            if remainingTime > 1 {
                 remainingTime -= 1
+            } else if remainingTime > 0 {
+                remainingTime -= 1
+                soundPlayer.routinePlay()
             } else {
-                playSound()
                 moveToNextStep()
             }
         }
@@ -112,26 +115,12 @@ struct RoutineTimerView: View {
             timer?.invalidate()
         }
     }
-    
-    private func playSound() {
-            guard let soundURL = Bundle.main.url(forResource: "alarm", withExtension: "mp3") else {
-                print("Sound file not found.")
-                return
-            }
-            
-            do {
-                audioPlayer = try AVAudioPlayer(contentsOf: soundURL)
-                audioPlayer?.play()
-            } catch {
-                print("Failed to play sound: \(error.localizedDescription)")
-            }
-        }
 }
 
 #Preview {
     RoutineTimerView(routine: [
         Routine(title: "歯みがき", duration: 1),
-        Routine(title: "朝ごはん作る", duration: 10),
+        Routine(title: "朝ごはん作る", duration: 1),
         Routine(title: "食事する", duration: 15),
         Routine(title: "歯磨き", duration: 5),
         Routine(title: "着替える", duration: 5)
