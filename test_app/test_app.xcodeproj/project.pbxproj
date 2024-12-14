@@ -24,6 +24,7 @@
 		C44DB31A2BE20A830063F284 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C44DB3192BE20A830063F284 /* Preview Assets.xcassets */; };
 		C475590D2D0BCFD1004FAC39 /* SoundPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C475590C2D0BCFD1004FAC39 /* SoundPlayer.swift */; };
 		C475590F2D0BECDA004FAC39 /* AqourBallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C475590E2D0BECDA004FAC39 /* AqourBallView.swift */; };
+		C47559112D0C2470004FAC39 /* PointViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47559102D0C2470004FAC39 /* PointViewModel.swift */; };
 		C497B8202D06055A00B7AFCB /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C497B81F2D06055A00B7AFCB /* SignupView.swift */; };
 		C497B8242D063B4000B7AFCB /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C497B8232D063B4000B7AFCB /* UserModel.swift */; };
 		C497B8262D085B6900B7AFCB /* AddFriendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C497B8252D085B6900B7AFCB /* AddFriendView.swift */; };
@@ -49,6 +50,7 @@
 		C44DB3192BE20A830063F284 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C475590C2D0BCFD1004FAC39 /* SoundPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundPlayer.swift; sourceTree = "<group>"; };
 		C475590E2D0BECDA004FAC39 /* AqourBallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AqourBallView.swift; sourceTree = "<group>"; };
+		C47559102D0C2470004FAC39 /* PointViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointViewModel.swift; sourceTree = "<group>"; };
 		C497B81F2D06055A00B7AFCB /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
 		C497B8232D063B4000B7AFCB /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		C497B8252D085B6900B7AFCB /* AddFriendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendView.swift; sourceTree = "<group>"; };
@@ -100,6 +102,7 @@
 				C475590C2D0BCFD1004FAC39 /* SoundPlayer.swift */,
 				C40837A52BFF515600B7FF3B /* MissionView.swift */,
 				C40837A32BFF4EEB00B7FF3B /* AccountView.swift */,
+				C47559102D0C2470004FAC39 /* PointViewModel.swift */,
 				C497B8232D063B4000B7AFCB /* UserModel.swift */,
 				C40837AC2C0442E100B7FF3B /* RecordView.swift */,
 				C40837A92BFF58D400B7FF3B /* RoutineView.swift */,
@@ -205,6 +208,7 @@
 				C41BA3942D001D510035A88E /* LoginView.swift in Sources */,
 				C4461C942C0C48C700E15E26 /* EditAlarmView.swift in Sources */,
 				C497B8242D063B4000B7AFCB /* UserModel.swift in Sources */,
+				C47559112D0C2470004FAC39 /* PointViewModel.swift in Sources */,
 				C475590D2D0BCFD1004FAC39 /* SoundPlayer.swift in Sources */,
 				C40837AD2C0442E100B7FF3B /* RecordView.swift in Sources */,
 			);

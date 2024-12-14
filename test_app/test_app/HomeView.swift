@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct HomeView: View {
+    @StateObject private var viewModel = PointViewModel()
+    
     @State var nowDate = Date()
     @State var dateText = ""
     private let dateFormatter = DateFormatter()
@@ -72,7 +74,7 @@ struct HomeView: View {
                         HStack{
                             Text("大きさ")
                             Spacer()
-                            Text("\(Int(point))mm")
+                            Text("\(viewModel.totalPoints) mm")
                         }
                     }
                     .backgroundStyle(.white)
@@ -99,7 +101,7 @@ struct HomeView: View {
                                                     .resizable()
                                                     .scaledToFill()
                                             )
-                                            .frame(width: point)
+                                            .frame(width: CGFloat(viewModel.totalPoints + 10))
                                             .padding()
                                         Spacer()
                                     }
@@ -114,6 +116,9 @@ struct HomeView: View {
                 .backgroundStyle(Color(red: 238/255, green: 240/255, blue: 237/255))
                 .buttonStyle(PlainButtonStyle())
                 .padding()
+                .onAppear {
+                    viewModel.fetchUserPoints()
+                }
                 
                 GroupBox {
                     Text("朝のルーチン")
