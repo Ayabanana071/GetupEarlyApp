@@ -25,6 +25,9 @@
 		C475590D2D0BCFD1004FAC39 /* SoundPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C475590C2D0BCFD1004FAC39 /* SoundPlayer.swift */; };
 		C475590F2D0BECDA004FAC39 /* AqourBallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C475590E2D0BECDA004FAC39 /* AqourBallView.swift */; };
 		C47559112D0C2470004FAC39 /* PointViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47559102D0C2470004FAC39 /* PointViewModel.swift */; };
+		C47559172D0EF9A4004FAC39 /* RankingGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47559162D0EF9A3004FAC39 /* RankingGroupView.swift */; };
+		C47559192D0EFA53004FAC39 /* MissionGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47559182D0EFA53004FAC39 /* MissionGroupView.swift */; };
+		C475591D2D0F0712004FAC39 /* MissionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C475591C2D0F0711004FAC39 /* MissionViewModel.swift */; };
 		C497B8202D06055A00B7AFCB /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C497B81F2D06055A00B7AFCB /* SignupView.swift */; };
 		C497B8242D063B4000B7AFCB /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C497B8232D063B4000B7AFCB /* UserModel.swift */; };
 		C497B8262D085B6900B7AFCB /* AddFriendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C497B8252D085B6900B7AFCB /* AddFriendView.swift */; };
@@ -51,6 +54,9 @@
 		C475590C2D0BCFD1004FAC39 /* SoundPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundPlayer.swift; sourceTree = "<group>"; };
 		C475590E2D0BECDA004FAC39 /* AqourBallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AqourBallView.swift; sourceTree = "<group>"; };
 		C47559102D0C2470004FAC39 /* PointViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointViewModel.swift; sourceTree = "<group>"; };
+		C47559162D0EF9A3004FAC39 /* RankingGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankingGroupView.swift; sourceTree = "<group>"; };
+		C47559182D0EFA53004FAC39 /* MissionGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionGroupView.swift; sourceTree = "<group>"; };
+		C475591C2D0F0711004FAC39 /* MissionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionViewModel.swift; sourceTree = "<group>"; };
 		C497B81F2D06055A00B7AFCB /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
 		C497B8232D063B4000B7AFCB /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		C497B8252D085B6900B7AFCB /* AddFriendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendView.swift; sourceTree = "<group>"; };
@@ -101,6 +107,9 @@
 				C475590E2D0BECDA004FAC39 /* AqourBallView.swift */,
 				C475590C2D0BCFD1004FAC39 /* SoundPlayer.swift */,
 				C40837A52BFF515600B7FF3B /* MissionView.swift */,
+				C47559162D0EF9A3004FAC39 /* RankingGroupView.swift */,
+				C47559182D0EFA53004FAC39 /* MissionGroupView.swift */,
+				C475591C2D0F0711004FAC39 /* MissionViewModel.swift */,
 				C40837A32BFF4EEB00B7FF3B /* AccountView.swift */,
 				C47559102D0C2470004FAC39 /* PointViewModel.swift */,
 				C497B8232D063B4000B7AFCB /* UserModel.swift */,
@@ -204,9 +213,12 @@
 				C42C8DBB2C3774D5004B8ADC /* RoutineTimerView.swift in Sources */,
 				C497B8202D06055A00B7AFCB /* SignupView.swift in Sources */,
 				C497B8262D085B6900B7AFCB /* AddFriendView.swift in Sources */,
+				C47559192D0EFA53004FAC39 /* MissionGroupView.swift in Sources */,
 				C40837A62BFF515600B7FF3B /* MissionView.swift in Sources */,
 				C41BA3942D001D510035A88E /* LoginView.swift in Sources */,
+				C475591D2D0F0712004FAC39 /* MissionViewModel.swift in Sources */,
 				C4461C942C0C48C700E15E26 /* EditAlarmView.swift in Sources */,
+				C47559172D0EF9A4004FAC39 /* RankingGroupView.swift in Sources */,
 				C497B8242D063B4000B7AFCB /* UserModel.swift in Sources */,
 				C47559112D0C2470004FAC39 /* PointViewModel.swift in Sources */,
 				C475590D2D0BCFD1004FAC39 /* SoundPlayer.swift in Sources */,
