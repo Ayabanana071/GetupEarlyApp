@@ -39,7 +39,8 @@ struct EditAlarmView: View {
             }
             .navigationBarItems(trailing: Button("完了") {
                 UNUserNotificationCenter.current().removeAllPendingNotificationRequests() // 以前の通知をキャンセル
-                scheduleNotification(at: wakeUpTime) // 起床時間に通知をスケジュール
+                wakeUpTimeScheduleNotification(at: wakeUpTime) // 起床時間に通知をスケジュール
+                bedTimeTimeScheduleNotification(at: bedTime)
                 presentationMode.wrappedValue.dismiss()
             })
             //常時背景色を適用
@@ -50,32 +51,46 @@ struct EditAlarmView: View {
     }
 }
 
-func scheduleNotification(at date: Date) {
+func wakeUpTimeScheduleNotification(at date: Date) {
     let content = UNMutableNotificationContent()
     content.title = "アラーム"
     content.body = "起床時間です！"
-
-    // カスタムサウンドを指定
     content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: "alarm_sound.mp3"))
-//    content.sound = UNNotificationSound.default
 
-    // 時間だけに基づいて通知をスケジュールする
     let triggerDate = Calendar.current.dateComponents([.hour, .minute], from: date)
-    print("通知が設定される時刻: \(triggerDate)")
-
-    // 通知を毎日繰り返す
     let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: true)
-
-    let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-
+    
+    let request = UNNotificationRequest(identifier: "wakeUpTimeNotification", content: content, trigger: trigger)
+    
     UNUserNotificationCenter.current().add(request) { error in
         if let error = error {
-            print("通知をスケジュールできませんでした: \(error.localizedDescription)")
+            print("起床通知のスケジュールエラー: \(error.localizedDescription)")
         } else {
-            print("毎日の通知がスケジュールされました")
+            print("起床通知がスケジュールされました")
         }
     }
 }
+
+func bedTimeTimeScheduleNotification(at date: Date) {
+    let content = UNMutableNotificationContent()
+    content.title = "就寝通知"
+    content.body = "就寝時間です！"
+    content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: "sleep_sound.mp3"))
+
+    let triggerDate = Calendar.current.dateComponents([.hour, .minute], from: date)
+    let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: true)
+    
+    let request = UNNotificationRequest(identifier: "bedTimeNotification", content: content, trigger: trigger)
+    
+    UNUserNotificationCenter.current().add(request) { error in
+        if let error = error {
+            print("就寝通知のスケジュールエラー: \(error.localizedDescription)")
+        } else {
+            print("就寝通知がスケジュールされました")
+        }
+    }
+}
+
 
 struct EditAlarmView_Previews: PreviewProvider {
     static var previews: some View {
