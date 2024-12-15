@@ -65,6 +65,8 @@ struct HomeView: View {
                         .foregroundStyle(.yellow)
                 }
                 
+                WakeUpView()
+                
                 GroupBox{
                     Text("まりも")
                         .fontWeight(.medium)
