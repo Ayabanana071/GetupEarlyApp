@@ -13,18 +13,27 @@ struct EditAlarmView: View {
     @Binding var bedTime: Date
     @Environment(\.presentationMode) var presentationMode
     
+    // UserDefaults Keys
+    private let wakeUpTimeKey = "wakeUpTime"
+    private let bedTimeKey = "bedTime"
+    
     var body: some View {
-        NavigationStack{
+        NavigationStack {
             Form {
                 Section(header: Text("起床時間")
                     .font(.headline)
                     .padding(.vertical, 5)
+                    .foregroundColor(Color.accentColor)
                 ) {
                     DatePicker("起床時間", selection: $wakeUpTime, displayedComponents: .hourAndMinute)
                         .datePickerStyle(WheelDatePickerStyle())
                 }
                 
-                Section(header: Text("就寝時間")) {
+                Section(header: Text("就寝時間")
+                    .font(.headline)
+                    .padding(.vertical, 5)
+                    .foregroundColor(Color.accentColor)
+                ){
                     DatePicker("就寝時間", selection: $bedTime, displayedComponents: .hourAndMinute)
                         .datePickerStyle(WheelDatePickerStyle())
                 }
@@ -38,16 +47,43 @@ struct EditAlarmView: View {
                 }
             }
             .navigationBarItems(trailing: Button("完了") {
-                UNUserNotificationCenter.current().removeAllPendingNotificationRequests() // 以前の通知をキャンセル
-                wakeUpTimeScheduleNotification(at: wakeUpTime) // 起床時間に通知をスケジュール
-                bedTimeTimeScheduleNotification(at: bedTime)
+                saveTimesToUserDefaults() // 起床時間と就寝時間を保存
+                scheduleNotifications()  // 通知をスケジュール
                 presentationMode.wrappedValue.dismiss()
             })
-            //常時背景色を適用
+            .onAppear {
+                loadTimesFromUserDefaults() // 起床時間と就寝時間を読み込み
+            }
             .toolbarBackground(.visible, for: .navigationBar)
-            //背景色をグリーンにする
-            .toolbarBackground(.green.opacity(0.3),for: .navigationBar)
+            .toolbarBackground(.green.opacity(0.3), for: .navigationBar)
         }
+    }
+    
+    // UserDefaultsに保存
+    private func saveTimesToUserDefaults() {
+        let defaults = UserDefaults.standard
+        defaults.set(wakeUpTime, forKey: wakeUpTimeKey)
+        defaults.set(bedTime, forKey: bedTimeKey)
+        print("起床時間と就寝時間を保存しました")
+    }
+    
+    // UserDefaultsから読み込み
+    private func loadTimesFromUserDefaults() {
+        let defaults = UserDefaults.standard
+        if let savedWakeUpTime = defaults.object(forKey: wakeUpTimeKey) as? Date {
+            wakeUpTime = savedWakeUpTime
+        }
+        if let savedBedTime = defaults.object(forKey: bedTimeKey) as? Date {
+            bedTime = savedBedTime
+        }
+        print("起床時間と就寝時間を読み込みました")
+    }
+    
+    // 通知のスケジュール
+    private func scheduleNotifications() {
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests() // 以前の通知をキャンセル
+        wakeUpTimeScheduleNotification(at: wakeUpTime) // 起床時間に通知をスケジュール
+        bedTimeTimeScheduleNotification(at: bedTime)  // 就寝時間に通知をスケジュール
     }
 }
 
@@ -90,7 +126,6 @@ func bedTimeTimeScheduleNotification(at date: Date) {
         }
     }
 }
-
 
 struct EditAlarmView_Previews: PreviewProvider {
     static var previews: some View {

@@ -14,18 +14,31 @@ struct AlarmTime {
 }
 
 struct AlarmView: View {
-//    @State private var wakeUpTime: Date = Calendar.current.date(bySettingHour: 7, minute: 0, second: 0, of: Date())!
-//    @State private var bedTime: Date = Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: Date())!
-//    @State private var isEditing: Bool = false
-    
     @Binding var isEditing: Bool
     @Binding var wakeUpTime: Date
     @Binding var bedTime: Date
-
+    
+    // UserDefaults Keys
+    private let wakeUpTimeKey = "wakeUpTime"
+    private let bedTimeKey = "bedTime"
+    
     var body: some View {
         VStack {
             AlarmTimeView(title: "起床時間", time: wakeUpTime)
             AlarmTimeView(title: "就寝時間", time: bedTime)
+            
+            Button(action: {
+                isEditing = true
+            }) {
+                Text("時間を編集")
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.accentColor)
+                    .cornerRadius(10)
+            }
+            .padding()
         }
         .sheet(isPresented: $isEditing) {
             EditAlarmView(wakeUpTime: $wakeUpTime, bedTime: $bedTime)
@@ -40,7 +53,7 @@ struct AlarmTimeView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            GroupBox{
+            GroupBox {
                 Text(title)
                     .font(.title3)
                     .fontWeight(.medium)
@@ -56,7 +69,6 @@ struct AlarmTimeView: View {
             }
             .backgroundStyle(Color(red: 238/255, green: 240/255, blue: 237/255))
         }
-//        .shadow(color: .init(red: 197/255, green: 197/255, blue: 197/255), radius: 3, x: 0, y: 3)
         .padding()
     }
     
@@ -67,13 +79,10 @@ struct AlarmTimeView: View {
     }
 }
 
-//struct AlarmView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        AlarmView()
-//    }
-//}
-
-
 #Preview {
-    AlarmView(isEditing: .constant(false), wakeUpTime: .constant(Date()), bedTime: .constant(Date()))
+    AlarmView(
+        isEditing: .constant(false), // 初期値としてfalseを渡す
+        wakeUpTime: .constant(Date()), // 現在の日時を初期値として渡す
+        bedTime: .constant(Date()) // 同じく現在の日時を渡す
+    )
 }

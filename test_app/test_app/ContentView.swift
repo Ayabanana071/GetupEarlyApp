@@ -16,6 +16,10 @@ struct ContentView: View {
     @State private var bedTime: Date = Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: Date())!
     @State private var routines: [Routine] = Routine.sampleData
     
+    // UserDefaults Keys
+    private let wakeUpTimeKey = "wakeUpTime"
+    private let bedTimeKey = "bedTime"
+    
     init(){
         UITabBar.appearance().backgroundColor
         = UIColor(red: 200/255, green: 236/255, blue: 195/255, alpha: 1)
@@ -61,12 +65,12 @@ struct ContentView: View {
                         .navigationBarTitleDisplayMode(.inline)
                         .toolbarBackground(.visible, for: .navigationBar)
                         .toolbarBackground(.green.opacity(0.4), for: .navigationBar)
-                        .navigationBarItems(trailing: Button(action: {
-                            self.isEditing.toggle()
-                        }) {
-                            Text("編集")
-                                .foregroundColor(Color(red: 48/255, green: 178/255, blue: 127/255))
-                        })
+//                        .navigationBarItems(trailing: Button(action: {
+//                            self.isEditing.toggle()
+//                        }) {
+//                            Text("編集")
+//                                .foregroundColor(Color(red: 48/255, green: 178/255, blue: 127/255))
+//                        })
                 }
                 .tabItem { Label("Alarm", systemImage: "alarm") }
                 .tag(2)
@@ -128,10 +132,20 @@ struct ContentView: View {
                         print("通知が拒否されました")
                     }
                 }
+                loadTimesFromUserDefaults()
             }
             .accentColor(.accentColor)
         }
-
+    }
+    
+    private func loadTimesFromUserDefaults() {
+        let defaults = UserDefaults.standard
+        if let savedWakeUpTime = defaults.object(forKey: wakeUpTimeKey) as? Date {
+            wakeUpTime = savedWakeUpTime
+        }
+        if let savedBedTime = defaults.object(forKey: bedTimeKey) as? Date {
+            bedTime = savedBedTime
+        }
     }
 }
 
