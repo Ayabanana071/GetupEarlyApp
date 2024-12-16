@@ -15,46 +15,58 @@ struct MathQuizView: View {
     @Environment(\.presentationMode) var presentationMode // シート制御用
 
     var body: some View {
-        VStack {
-            ForEach(0..<questions.count, id: \.self) { index in
-                HStack {
-                    Text(questions[index].0) // 問題文
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .foregroundColor(Color.accentColor)
-                    Spacer()
-                    TextField("答え", text: $userAnswers[index])
-                        .foregroundColor(Color.accentColor)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .keyboardType(.numberPad)
-                        .frame(width: 80)
+        NavigationStack {
+            VStack {
+                ForEach(0..<questions.count, id: \.self) { index in
+                    HStack {
+                        Text(questions[index].0) // 問題文
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .foregroundColor(Color.accentColor)
+                        Spacer()
+                        TextField("答え", text: $userAnswers[index])
+                            .foregroundColor(Color.accentColor)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .keyboardType(.numberPad)
+                            .frame(width: 80)
+                    }
+                    .padding()
+                }
+
+                Button(action: {
+                    checkAnswers()
+                }) {
+                    Text("提出する")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color.accentColor)
+                        .cornerRadius(10)
                 }
                 .padding()
-            }
 
-            Button(action: {
-                checkAnswers()
-            }) {
-                Text("提出")
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.accentColor)
-                    .cornerRadius(10)
+                if showResult {
+                    Text(isCorrect ? "正解です！" : "不正解です。")
+                        .font(.title2)
+                        .foregroundColor(isCorrect ? .green : .red)
+                        .padding()
+                }
             }
             .padding()
-
-            if showResult {
-                Text(isCorrect ? "正解です！" : "不正解です。")
-                    .font(.title2)
-                    .foregroundColor(isCorrect ? .green : .red)
-                    .padding()
+            .onAppear {
+                generateQuestions()
             }
-        }
-        .padding()
-        .onAppear {
-            generateQuestions()
+            .navigationBarTitle("おはようエクササイズ", displayMode: .inline)
+            .toolbar { ToolbarItem(placement: .principal) {
+                Text("おはようエクササイズ")
+                    .fontWeight(.medium)
+                    .foregroundColor(Color("MainColor"))
+                    .font(.system(size: 18))
+                }
+            }
+            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbarBackground(.green.opacity(0.3), for: .navigationBar)
         }
     }
 
@@ -88,20 +100,55 @@ struct MathQuizView: View {
 
         if isCorrect {
             test_app.sendWakeUpTimeToServer(wakeUpTime: Date())
-            rescheduleWakeUpNotifications()
+            test_app.rescheduleWakeUpNotifications()
+            sendEarlyRiseRecord()
             presentationMode.wrappedValue.dismiss() // シートを閉じる
         }
     }
+    
+    private func sendEarlyRiseRecord() {
+        let userDefaults = UserDefaults.standard
+        
+        guard let wakeUpTime = userDefaults.object(forKey: "wakeUpTime") as? Date else {
+            print("起床時間が設定されていません")
+            return
+        }
+        let clearedAt = Date()
+        
+        guard let token = UserDefaults.standard.string(forKey: "userToken") else {
+            print("ログインしていないため、起床記録を作成できません")
+            return
+        }
+        
+        guard let url = URL(string: "http://localhost:3000/early_rises") else { return }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization") // トークン認証を想定
+        
+        let recordData: [String: Any] = [
+            "wake_up_time": ISO8601DateFormatter().string(from: wakeUpTime),
+            "cleared_at": ISO8601DateFormatter().string(from: clearedAt)
+        ]
+        
+        request.httpBody = try? JSONSerialization.data(withJSONObject: recordData, options: [])
 
-    private func sendWakeUpTimeToServer() {
-        print("起床時間をサーバーに送信しました")
-    }
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("エラー: \(error)")
+                return
+            }
 
-    private func rescheduleWakeUpNotifications() {
-        print("通知を再スケジュールしました")
+            guard let response = response as? HTTPURLResponse, response.statusCode == 201 else {
+                print("サーバーエラー: \(String(describing: response))")
+                return
+            }
+
+            print("早起き記録を保存しました")
+        }.resume()
     }
 }
-
 #Preview {
     MathQuizView()
 }

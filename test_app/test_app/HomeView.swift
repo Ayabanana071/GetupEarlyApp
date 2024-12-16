@@ -65,7 +65,9 @@ struct HomeView: View {
                         .foregroundStyle(.yellow)
                 }
                 
-                WakeUpView()
+                if isMorning() {
+                    WakeUpView()
+                }
                 
                 GroupBox{
                     Text("まりも")
@@ -158,6 +160,32 @@ struct HomeView: View {
                     .presentationDragIndicator(.visible)
             }
         }
+    }
+    
+    // 午前中かどうかを判定
+    private func isMorning() -> Bool {
+        let wakeUpTimeKey = "wakeUpTime"
+        
+        // UserDefaultsから起床時間を取得
+        let defaults = UserDefaults.standard
+        guard let wakeUpTime = defaults.object(forKey: wakeUpTimeKey) as? Date else {
+            print("ユーザーデフォルトに起床時間が保存されていません")
+            return false
+        }
+        
+        // 現在時刻を取得
+        let now = Date()
+        
+        // 午前中の終了時間（wakeUpTimeの12時）を計算
+        var morningEnd = Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: wakeUpTime)
+        
+        // wakeUpTimeの午前中終了が翌日にまたがる場合
+        if wakeUpTime > morningEnd! {
+            morningEnd = Calendar.current.date(byAdding: .day, value: 1, to: morningEnd!)
+        }
+        
+        // 現在時刻がwakeUpTimeからmorningEndまでの範囲内か確認
+        return now >= wakeUpTime && now < morningEnd!
     }
 }
 

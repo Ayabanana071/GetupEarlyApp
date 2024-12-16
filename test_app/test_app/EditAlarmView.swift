@@ -91,7 +91,7 @@ func wakeUpTimeScheduleNotification(at date: Date) {
     for i in 0..<3 { // 3回通知をスケジュール
         let content = UNMutableNotificationContent()
         content.title = "アラーム"
-        content.body = "起床時間です！"
+        content.body = "起床時間です！エクササイズをして目覚めましょう！"
         content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: "alarm_sound.mp3"))
 
         // 通知時刻を計算
