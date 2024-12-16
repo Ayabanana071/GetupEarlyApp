@@ -27,7 +27,7 @@ struct RoutineTimerView: View {
                 VStack {
                     GroupBox{
                         Text(routine[currentStepIndex].title)
-                            .font(.title)
+                            .font(.title2)
                             .fontWeight(.medium)
                             .foregroundColor(Color(red: 48/255, green: 178/255, blue: 127/255))
                             .multilineTextAlignment(.center)
@@ -84,6 +84,7 @@ struct RoutineTimerView: View {
                     .backgroundStyle(Color(red: 238/255, green: 240/255, blue: 237/255))
                     .padding()
             }
+                .padding()
             }
             .onDisappear {
                 timer?.invalidate()

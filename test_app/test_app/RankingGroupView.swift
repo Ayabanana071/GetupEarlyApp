@@ -7,43 +7,90 @@
 
 import SwiftUI
 
-struct Friend {
+struct Friend: Identifiable, Codable {
+    var id: Int
     var name: String
     var score: Int
 }
 
 struct RankingGroupView: View {
-    @State var friends: [Friend] = [
-        Friend(name: "喜納日菜妃", score: 30),
-        Friend(name: "真栄喜楓鈴", score: 25),
-        Friend(name: "津嘉山みやび", score: 10),
-        Friend(name: "岸本志琉", score: 15),
-        Friend(name: "島袋愛子", score: 5)
-    ]
-    
+    @State private var friends: [Friend] = []
+    @State private var errorMessage: String? = nil
+
     var body: some View {
-        GroupBox {
-            Text("ランキング")
-                .foregroundColor(Color(red: 48/255, green: 178/255, blue: 127/255))
-                .fontWeight(.medium)
-                .font(.title3)
-            
-            ForEach(Array(sortedFriends.enumerated()), id: \.element.name) { index, friend in
-                GroupBox {
-                    HStack {
-                        Text("\(index+1)位")
-                            .font(.title3)
-                        Spacer()
-                        Text(friend.name)
-                        Spacer()
-                        Text("\(friend.score)point").font(.caption2)
-                    }
+        VStack {
+            GroupBox {
+                HStack{
+                    Spacer()
+                    Text("ランキング")
+                        .foregroundColor(Color(red: 48/255, green: 178/255, blue: 127/255))
+                        .fontWeight(.medium)
+                        .font(.title3)
+                    Spacer()
                 }
-                .backgroundStyle(.white)
+
+                ForEach(Array(sortedFriends.enumerated()), id: \.element.id) { index, friend in
+                    GroupBox {
+                        HStack {
+                            Text("\(index+1)位")
+                                .font(.title3)
+                            Spacer()
+                            Text(friend.name)
+                            Spacer()
+                            Text("\(friend.score)point").font(.caption2)
+                        }
+                    }
+                    .backgroundStyle(.white)
+                }
+            }
+            .compositingGroup()
+            .backgroundStyle(Color(red: 238/255, green: 240/255, blue: 237/255))
+            .padding()
+            
+            if let errorMessage = errorMessage {
+                Text(errorMessage)
+                    .foregroundColor(.red)
+                    .font(.caption)
             }
         }
-        .compositingGroup()
-        .backgroundStyle(Color(red: 238/255, green: 240/255, blue: 237/255))                .padding()
+        .onAppear(perform: fetchRanking)
+    }
+    
+    func fetchRanking() {
+        guard let token = UserDefaults.standard.string(forKey: "userToken") else {
+            self.errorMessage = "ログインしていません"
+            return
+        }
+
+        guard let url = URL(string: "http://localhost:3000/rankings/weekly") else {
+            self.errorMessage = "無効なURLです"
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                DispatchQueue.main.async {
+                    self.errorMessage = "データ取得に失敗しました: \(error.localizedDescription)"
+                }
+                return
+            }
+
+            if let data = data, let fetchedFriends = try? JSONDecoder().decode([Friend].self, from: data) {
+                DispatchQueue.main.async {
+                    self.friends = fetchedFriends
+                    self.errorMessage = nil
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.errorMessage = "データの解析に失敗しました"
+                }
+            }
+        }.resume()
     }
     
     var sortedFriends: [Friend] {
