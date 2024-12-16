@@ -88,24 +88,33 @@ struct EditAlarmView: View {
 }
 
 func wakeUpTimeScheduleNotification(at date: Date) {
-    let content = UNMutableNotificationContent()
-    content.title = "アラーム"
-    content.body = "起床時間です！"
-    content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: "alarm_sound.mp3"))
+    for i in 0..<3 { // 3回通知をスケジュール
+        let content = UNMutableNotificationContent()
+        content.title = "アラーム"
+        content.body = "起床時間です！エクササイズをして目覚めましょう！"
+        content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: "alarm_sound.mp3"))
 
-    let triggerDate = Calendar.current.dateComponents([.hour, .minute], from: date)
-    let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: true)
-    
-    let request = UNNotificationRequest(identifier: "wakeUpTimeNotification", content: content, trigger: trigger)
-    
-    UNUserNotificationCenter.current().add(request) { error in
-        if let error = error {
-            print("起床通知のスケジュールエラー: \(error.localizedDescription)")
-        } else {
-            print("起床通知がスケジュールされました")
+        // 通知時刻を計算
+        let triggerDate = Calendar.current.date(byAdding: .minute, value: i * 2, to: date) ?? date
+        let triggerComponents = Calendar.current.dateComponents([.hour, .minute], from: triggerDate)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: triggerComponents, repeats: false) // 繰り返しなし
+
+        let request = UNNotificationRequest(
+            identifier: "wakeUpTimeNotification_\(i)", // ユニークなIDを設定
+            content: content,
+            trigger: trigger
+        )
+
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("起床通知のスケジュールエラー: \(error.localizedDescription)")
+            } else {
+                print("起床通知がスケジュールされました: \(triggerDate)")
+            }
         }
     }
 }
+
 
 func bedTimeTimeScheduleNotification(at date: Date) {
     let content = UNMutableNotificationContent()
