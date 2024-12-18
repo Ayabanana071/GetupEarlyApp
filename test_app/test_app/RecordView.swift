@@ -9,47 +9,19 @@ import SwiftUI
 import Charts
 
 struct RecordView: View {
-    @State var wakeUpTimes: [DateComponents] = [
-        DateComponents(hour: 7, minute: 25),
-        DateComponents(hour: 6, minute: 30),
-        DateComponents(hour: 7, minute: 0),
-        DateComponents(hour: 7, minute: 15),
-        DateComponents(hour: 6, minute: 50),
-        DateComponents(hour: 7, minute: 40),
-        DateComponents(hour: 7, minute: 5)
-    ]
-    
-    @State var bedTimes: [DateComponents] = [
-        DateComponents(hour: 0, minute: 25),
-        DateComponents(hour: 0, minute: 30),
-        DateComponents(hour: 0, minute: 15),
-        DateComponents(hour: 0, minute: 45),
-        DateComponents(hour: 1, minute: 0),
-        DateComponents(hour: 0, minute: 55),
-        DateComponents(hour: 0, minute: 35)
-    ]
-    
-    @State var sleepHours: [DateComponents] = [
-        DateComponents(hour: 7, minute: 0),
-        DateComponents(hour: 7, minute: 10),
-        DateComponents(hour: 7, minute: 15),
-        DateComponents(hour: 7, minute: 5),
-        DateComponents(hour: 7, minute: 20),
-        DateComponents(hour: 6, minute: 50),
-        DateComponents(hour: 7, minute: 30)
-    ]
+    @StateObject private var viewModel = EarlyRiseViewModel()
     
     let weekdays = ["日", "月", "火", "水", "木", "金", "土"]
 
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
-                RecordCardView(title: "今週の平均起床時間", data: wakeUpTimes, weekdays: weekdays)
+                RecordCardView(title: "今週の平均起床時間", data: viewModel.wakeUpTimes, weekdays: weekdays)
+                    .foregroundColor(Color("MainColor"))
                     .padding()
-                RecordCardView(title: "今週の平均就寝時間", data: bedTimes, weekdays: weekdays)
-                    .padding()
-                RecordCardView(title: "今週の平均睡眠時間", data: sleepHours, weekdays: weekdays)
-                    .padding()
+            }
+            .onAppear {
+                viewModel.fetchWakeUpTimes()
             }
         }
     }
@@ -71,14 +43,19 @@ struct RecordCardView: View {
             
             Text("\(formattedTime(from: averageTime))")
                 .font(.largeTitle)
-                .foregroundColor(.green)
-                .padding(.bottom, 5)
+                .foregroundColor(.accentColor)
+                .padding([.leading, .bottom], 5)
             
             Chart {
                 ForEach(data.indices, id: \.self) { index in
+                    let components = data[index]
+                    let weekdayIndex = Calendar.current.component(.weekday, from: components.date ?? Date()) - 1 // `DateComponents`から曜日を計算
+                    let weekdayName = weekdays[weekdayIndex]
+
+                    // LineMark: 線を描画
                     LineMark(
-                        x: .value("Day", weekdays[index]),
-                        y: .value("Time", Double(data[index].hour ?? 0) + Double(data[index].minute ?? 0) / 60.0)
+                        x: .value("Day", weekdayName),
+                        y: .value("Time", Double(components.hour ?? 0) + Double(components.minute ?? 0) / 60.0)
                     )
                 }
             }
@@ -86,13 +63,17 @@ struct RecordCardView: View {
             .padding()
         }
         .padding()
-        .background(Color(UIColor.systemBackground))
+        .backgroundStyle(Color(red: 238/255, green: 240/255, blue: 237/255))
+        .background(Color(red: 238/255, green: 240/255, blue: 237/255))
         .cornerRadius(10)
-        .shadow(radius: 5)
     }
     
     // 平均時間を計算する関数
     func calculateAverageTime(_ data: [DateComponents]) -> DateComponents {
+        guard !data.isEmpty else {
+            return DateComponents(hour: 0, minute: 0) // データがない場合のデフォルト値
+        }
+        
         let totalMinutes = data.reduce(0) { $0 + (($1.hour ?? 0) * 60 + ($1.minute ?? 0)) }
         let averageMinutes = totalMinutes / data.count
         return DateComponents(hour: averageMinutes / 60, minute: averageMinutes % 60)
@@ -100,10 +81,13 @@ struct RecordCardView: View {
     
     // DateComponentsを文字列にフォーマットする関数
     func formattedTime(from dateComponents: DateComponents) -> String {
-        guard let hour = dateComponents.hour, let minute = dateComponents.minute else { return "" }
+        guard let hour = dateComponents.hour, let minute = dateComponents.minute else {
+            return "N/A" // データがない場合の表示
+        }
         return String(format: "%d:%02d", hour, minute)
     }
 }
+
 
 #Preview {
     RecordView()

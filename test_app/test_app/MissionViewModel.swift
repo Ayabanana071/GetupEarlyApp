@@ -5,13 +5,25 @@
 //  Created by ayana taba on 2024/12/15.
 //
 
+
 import Foundation
+import Combine
+
+struct TotalClearMissionsResponse: Codable {
+    let totalClearMissionsCount: Int
+
+    private enum CodingKeys: String, CodingKey {
+        case totalClearMissionsCount = "total_clear_missions_count"
+    }
+}
 
 class MissionViewModel: ObservableObject {
     @Published var morningMissions: [Mission] = []
     @Published var nightMissions: [Mission] = []
     @Published var currentMissions: [Mission] = []
     @Published var errorMessage: String?
+    
+    @Published var totalClearMissionsCount: Int = 0
     
     private let allMorningMissions = [
         Mission(kind: "決めた時間に起きよう", checked: false, points: 10),
@@ -130,4 +142,54 @@ class MissionViewModel: ObservableObject {
             print("Mission data sent successfully.")
         }.resume()
     }
+    
+    func fetchTotalClearMissionsCount() {
+        guard let token = UserDefaults.standard.string(forKey: "userToken") else {
+            print("ログインしていないため、ミッション数を取得できません")
+            errorMessage = "ログインしていないため、ポイントを取得できません"
+            return
+        }
+        guard let url = URL(string: "http://localhost:3000/clear_missions/total_clear_missions_count") else {
+            self.errorMessage = "Invalid URL"
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    print("Error: \(error.localizedDescription)")
+                    self.errorMessage = "Failed to fetch data: \(error.localizedDescription)"
+                    return
+                }
+
+                if let httpResponse = response as? HTTPURLResponse {
+                    print("Status Code: \(httpResponse.statusCode)")
+                    if httpResponse.statusCode != 200 {
+                        self.errorMessage = "Invalid response code: \(httpResponse.statusCode)"
+                        return
+                    }
+                }
+
+                guard let data = data else {
+                    self.errorMessage = "No data received"
+                    return
+                }
+
+                do {
+                    let decodedResponse = try JSONDecoder().decode(TotalClearMissionsResponse.self, from: data)
+                    self.totalClearMissionsCount = decodedResponse.totalClearMissionsCount
+                    print("Total Clear Missions Count: \(decodedResponse.totalClearMissionsCount)")
+                } catch {
+                    print("Decoding Error: \(error.localizedDescription)")
+                    print()
+                    self.errorMessage = "Failed to decode response: \(error.localizedDescription)"
+                }
+            }
+        }.resume()
+    }
+
 }

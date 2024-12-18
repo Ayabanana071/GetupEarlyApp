@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct AccountView: View {
+    @StateObject private var missionViewModel = MissionViewModel()
+    @StateObject private var earlyRiseViewModel = EarlyRiseViewModel()
     @Binding var isLogin: Bool
     
     @State private var username: String = "Loading..."
@@ -58,6 +60,48 @@ struct AccountView: View {
                     .backgroundStyle(Color(red: 238/255, green: 240/255, blue: 237/255))
                 }
                 
+                RecordView()
+                
+                GroupBox {
+                    HStack{
+                        Text("早起き達成日数")
+                            .foregroundColor(Color("MainColor"))
+                            .fontWeight(.medium)
+                            .font(.headline)
+                        Spacer()
+                    }
+                    HStack{
+                        Spacer()
+                        Text("\(earlyRiseViewModel.totalSuccessCount)日")
+                            .font(.largeTitle)
+                            .foregroundColor(Color.accentColor)
+                            .padding()
+                    }
+                }
+                .compositingGroup()
+                .backgroundStyle(Color(red: 238/255, green: 240/255, blue: 237/255))
+                .padding()
+                
+                GroupBox {
+                    HStack{
+                        Text("ミッション達成数")
+                            .foregroundColor(Color("MainColor"))
+                            .fontWeight(.medium)
+                            .font(.headline)
+                        Spacer()
+                    }
+                    HStack{
+                        Spacer()
+                        Text("\(missionViewModel.totalClearMissionsCount)回")
+                            .font(.largeTitle)
+                            .foregroundColor(Color.accentColor)
+                            .padding()
+                    }
+                }
+                .compositingGroup()
+                .backgroundStyle(Color(red: 238/255, green: 240/255, blue: 237/255))
+                .padding()
+                
                 GroupBox{
                     GroupBox{
                         HStack{
@@ -79,6 +123,8 @@ struct AccountView: View {
             .padding()
             .onAppear {
                 fetchUserData()
+                missionViewModel.fetchTotalClearMissionsCount()
+                earlyRiseViewModel.fetchTotalSuccessCount()
             }
         }
     }
@@ -119,58 +165,7 @@ struct AccountView: View {
     }
 }
 
-
-//import SwiftUI
-//
-//struct AccountView: View {
-//    @State private var username: String = "Loading..."
-//    @State private var createdAt: String = "Loading..."
-//    @State private var errorMessage: String = ""
-//    
-////    @State private var username: String = "ユーザー名"
-////    @State private var email: String = "user@example.com"
-//    @State private var notificationsEnabled: Bool = true
-//
-//    var body: some View {
-//        ScrollView{
-//            VStack{
-//                GroupBox{
-//                    Text("アカウント情報")
-//                        .foregroundColor(Color(red: 48/255, green: 178/255, blue: 127/255))
-//                        .fontWeight(.medium)
-//                        .font(.title3)
-//                    
-//                    GroupBox{
-//                        HStack {
-//                            Text("ユーザー名")
-//                            Spacer()
-//                            Text(username)
-//                                .foregroundColor(.gray)
-//                        }
-//                    }
-//                    .backgroundStyle(.white)
-//                }
-//                .backgroundStyle(Color(red: 238/255, green: 240/255, blue: 237/255))
-//                
-//                GroupBox{
-//                    Section {
-//                        Button(action: {
-//                            // ログアウト処理をここに追加
-//                        }) {
-//                            Text("ログアウト")
-//                                .foregroundColor(.red)
-//                        }
-//                    }
-//                }
-//                .backgroundStyle(Color(red: 238/255, green: 240/255, blue: 237/255))
-//            }
-//            .padding()
-//            .navigationTitle("アカウント")
-//        }
-//    }
-//}
-
 #Preview {
-    @State var isLoginPreview = true // プレビュー用のState変数を定義
-    return AccountView(isLogin: $isLoginPreview) // Bindingとして渡す
+    @State var isLoginPreview = true
+    return AccountView(isLogin: $isLoginPreview)
 }
