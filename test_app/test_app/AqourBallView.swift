@@ -37,7 +37,7 @@ struct AqourBallView: View {
                     }
                     .padding()
             }
-            .padding(.trailing, 150.0)
+            .padding(.trailing, 130.0)
             
             HStack{
                 Image(systemName: "circle")
@@ -61,7 +61,7 @@ struct AqourBallView: View {
                     .padding()
                 Spacer()
             }
-            .padding(.leading, 150.0)
+            .padding(.leading, 130.0)
         }
 
     }

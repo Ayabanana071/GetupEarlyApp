@@ -5,7 +5,17 @@
 //  Created by ayana taba on 2024/12/15.
 //
 
+
 import Foundation
+import Combine
+
+struct TotalClearMissionsResponse: Codable {
+    let totalClearMissionsCount: Int
+
+    private enum CodingKeys: String, CodingKey {
+        case totalClearMissionsCount = "total_clear_missions_count"
+    }
+}
 
 class MissionViewModel: ObservableObject {
     @Published var morningMissions: [Mission] = []
@@ -13,19 +23,21 @@ class MissionViewModel: ObservableObject {
     @Published var currentMissions: [Mission] = []
     @Published var errorMessage: String?
     
+    @Published var totalClearMissionsCount: Int = 0
+    
     private let allMorningMissions = [
-        Mission(kind: "決めた時間に起きよう", checked: false, points: 10),
-        Mission(kind: "朝食を食べよう", checked: false, points: 20),
-        Mission(kind: "軽い運動をしよう", checked: false, points: 30),
-        Mission(kind: "水を一杯飲もう", checked: false, points: 5),
-        Mission(kind: "寝起きにストレッチをしよう", checked: false, points: 15)
+        Mission(kind: "決めた時間に起きよう", checked: false, points: 5),
+        Mission(kind: "朝食を食べよう", checked: false, points: 2),
+        Mission(kind: "軽い運動をしよう", checked: false, points: 5),
+        Mission(kind: "水を一杯飲もう", checked: false, points: 2),
+        Mission(kind: "寝起きにストレッチをしよう", checked: false, points: 4)
     ]
     private let allNightMissions = [
-        Mission(kind: "寝る前にスマホを控えよう", checked: false, points: 10),
-        Mission(kind: "翌日の計画を立てよう", checked: false, points: 20),
-        Mission(kind: "リラックスする時間を持とう", checked: false, points: 30),
-        Mission(kind: "早めに布団に入ろう", checked: false, points: 5),
-        Mission(kind: "寝る前に軽い読書をしよう", checked: false, points: 15)
+        Mission(kind: "寝る前にスマホを控えよう", checked: false, points: 5),
+        Mission(kind: "翌日の計画を立てよう", checked: false, points: 2),
+        Mission(kind: "リラックスする時間を持とう", checked: false, points: 3),
+        Mission(kind: "早めに布団に入ろう", checked: false, points: 3),
+        Mission(kind: "寝る前に軽い読書をしよう", checked: false, points: 5)
     ]
 
     private let userDefaults = UserDefaults.standard
@@ -130,4 +142,54 @@ class MissionViewModel: ObservableObject {
             print("Mission data sent successfully.")
         }.resume()
     }
+    
+    func fetchTotalClearMissionsCount() {
+        guard let token = UserDefaults.standard.string(forKey: "userToken") else {
+            print("ログインしていないため、ミッション数を取得できません")
+            errorMessage = "ログインしていないため、ポイントを取得できません"
+            return
+        }
+        guard let url = URL(string: "http://localhost:3000/clear_missions/total_clear_missions_count") else {
+            self.errorMessage = "Invalid URL"
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    print("Error: \(error.localizedDescription)")
+                    self.errorMessage = "Failed to fetch data: \(error.localizedDescription)"
+                    return
+                }
+
+                if let httpResponse = response as? HTTPURLResponse {
+                    print("Status Code: \(httpResponse.statusCode)")
+                    if httpResponse.statusCode != 200 {
+                        self.errorMessage = "Invalid response code: \(httpResponse.statusCode)"
+                        return
+                    }
+                }
+
+                guard let data = data else {
+                    self.errorMessage = "No data received"
+                    return
+                }
+
+                do {
+                    let decodedResponse = try JSONDecoder().decode(TotalClearMissionsResponse.self, from: data)
+                    self.totalClearMissionsCount = decodedResponse.totalClearMissionsCount
+                    print("Total Clear Missions Count: \(decodedResponse.totalClearMissionsCount)")
+                } catch {
+                    print("Decoding Error: \(error.localizedDescription)")
+                    print()
+                    self.errorMessage = "Failed to decode response: \(error.localizedDescription)"
+                }
+            }
+        }.resume()
+    }
+
 }
