@@ -26,18 +26,18 @@ class MissionViewModel: ObservableObject {
     @Published var totalClearMissionsCount: Int = 0
     
     private let allMorningMissions = [
-        Mission(kind: "決めた時間に起きよう", checked: false, points: 10),
-        Mission(kind: "朝食を食べよう", checked: false, points: 20),
-        Mission(kind: "軽い運動をしよう", checked: false, points: 30),
-        Mission(kind: "水を一杯飲もう", checked: false, points: 5),
-        Mission(kind: "寝起きにストレッチをしよう", checked: false, points: 15)
+        Mission(kind: "決めた時間に起きよう", checked: false, points: 5),
+        Mission(kind: "朝食を食べよう", checked: false, points: 2),
+        Mission(kind: "軽い運動をしよう", checked: false, points: 5),
+        Mission(kind: "水を一杯飲もう", checked: false, points: 2),
+        Mission(kind: "寝起きにストレッチをしよう", checked: false, points: 4)
     ]
     private let allNightMissions = [
-        Mission(kind: "寝る前にスマホを控えよう", checked: false, points: 10),
-        Mission(kind: "翌日の計画を立てよう", checked: false, points: 20),
-        Mission(kind: "リラックスする時間を持とう", checked: false, points: 30),
-        Mission(kind: "早めに布団に入ろう", checked: false, points: 5),
-        Mission(kind: "寝る前に軽い読書をしよう", checked: false, points: 15)
+        Mission(kind: "寝る前にスマホを控えよう", checked: false, points: 5),
+        Mission(kind: "翌日の計画を立てよう", checked: false, points: 2),
+        Mission(kind: "リラックスする時間を持とう", checked: false, points: 3),
+        Mission(kind: "早めに布団に入ろう", checked: false, points: 3),
+        Mission(kind: "寝る前に軽い読書をしよう", checked: false, points: 5)
     ]
 
     private let userDefaults = UserDefaults.standard

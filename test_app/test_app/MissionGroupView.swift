@@ -32,6 +32,7 @@ struct MissionGroupView: View {
                         Image(systemName: mission.checked ? "checkmark.circle.fill" : "circle")
                         Text(mission.kind)
                         Spacer()
+                        Text("\(mission.points) point").font(.caption2)
                     }
                 }
                 .onTapGesture {

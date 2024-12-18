@@ -28,20 +28,22 @@ struct RankingGroupView: View {
                         .font(.title3)
                     Spacer()
                 }
-
-                ForEach(Array(sortedFriends.enumerated()), id: \.element.id) { index, friend in
-                    GroupBox {
-                        HStack {
-                            Text("\(index+1)位")
-                                .font(.title3)
-                            Spacer()
-                            Text(friend.name)
-                            Spacer()
-                            Text("\(friend.score)point").font(.caption2)
+                ScrollView{
+                    ForEach(Array(sortedFriends.enumerated()), id: \.element.id) { index, friend in
+                        GroupBox {
+                            HStack {
+                                Text("\(index+1)位")
+                                    .font(.title3)
+                                Spacer()
+                                Text(friend.name)
+                                Spacer()
+                                Text("\(friend.score)point").font(.caption2)
+                            }
                         }
+                        .backgroundStyle(.white)
                     }
-                    .backgroundStyle(.white)
                 }
+                .frame(width: nil, height: 350.0)
             }
             .compositingGroup()
             .backgroundStyle(Color(red: 238/255, green: 240/255, blue: 237/255))
