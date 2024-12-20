@@ -59,11 +59,12 @@ struct SignupView: View {
             }
         }
         .padding(.bottom, 80.0)
-        .padding()
+        .padding(.horizontal)
     }
 
     func signup() {
-        guard let url = URL(string: "http://localhost:3000/signup") else { return }
+//        guard let url = URL(string: "https://mysite-dv0d.onrender.com/signup") else { return }
+        guard let url = URL(string: "http://BOBnoMacBook-Pro.local:3000/signup") else { return }
         print($password)
         print($passwordConfirmation)
 

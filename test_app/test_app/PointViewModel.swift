@@ -18,14 +18,18 @@ class PointViewModel: ObservableObject {
         // トークンをUserDefaultsから取得
         guard let token = UserDefaults.standard.string(forKey: "userToken") else {
             print("ログインしていないため、ポイントを取得できません")
-            errorMessage = "ログインしていないため、ポイントを取得できません"
+            DispatchQueue.main.async {
+                self.errorMessage = "ログインしていないため、ポイントを取得できません"
+            }
             return
         }
         
         // APIエンドポイントを設定
-        guard let url = URL(string: "http://localhost:3000/points") else {
+        guard let url = URL(string: "http://BOBnoMacBook-Pro.local:3000/points") else {
             print("無効なURLです")
-            errorMessage = "無効なURLです"
+            DispatchQueue.main.async {
+                self.errorMessage = "無効なURLです"
+            }
             return
         }
         
@@ -56,10 +60,10 @@ class PointViewModel: ObservableObject {
                         do {
                             // 取得したデータをデコード
                             if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                                self.totalPoints = json["total_points"] as? Int ?? 0
-                                self.currentWeekPoints = json["current_week_points"] as? [[String: Any]] ?? []
-                                self.weeklyPointsTotal = json["weekly_points_total"] as? Int ?? 0
                                 DispatchQueue.main.async {
+                                    self.totalPoints = json["total_points"] as? Int ?? 0
+                                    self.currentWeekPoints = json["current_week_points"] as? [[String: Any]] ?? []
+                                    self.weeklyPointsTotal = json["weekly_points_total"] as? Int ?? 0
                                     self.errorMessage = nil // 成功時はエラーメッセージをリセット
                                 }
                             }
@@ -91,7 +95,7 @@ class PointViewModel: ObservableObject {
         }
 
         // APIエンドポイントを設定
-        guard let url = URL(string: "http://localhost:3000/points") else { return }
+        guard let url = URL(string: "http://BOBnoMacBook-Pro.local:3000/points") else { return }
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -110,12 +114,16 @@ class PointViewModel: ObservableObject {
         // データタスクを作成してリクエストを送信
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
-                print("エラーが発生しました: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    print("エラーが発生しました: \(error.localizedDescription)")
+                }
                 return
             }
 
             guard let data = data else {
-                print("データがありません")
+                DispatchQueue.main.async {
+                    print("データがありません")
+                }
                 return
             }
 
@@ -125,13 +133,19 @@ class PointViewModel: ObservableObject {
                 case 201: // 成功時
                     do {
                         if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                            print("ポイント作成成功: \(json)")
+                            DispatchQueue.main.async {
+                                print("ポイント作成成功: \(json)")
+                            }
                         }
                     } catch {
-                        print("データ解析に失敗しました: \(error.localizedDescription)")
+                        DispatchQueue.main.async {
+                            print("データ解析に失敗しました: \(error.localizedDescription)")
+                        }
                     }
                 default:
-                    print("ポイント作成に失敗しました: ステータスコード \(httpResponse.statusCode)")
+                    DispatchQueue.main.async {
+                        print("ポイント作成に失敗しました: ステータスコード \(httpResponse.statusCode)")
+                    }
                 }
             }
         }.resume()

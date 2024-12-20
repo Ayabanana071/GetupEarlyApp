@@ -65,7 +65,7 @@ struct FriendView: View {
         }
         
         // APIエンドポイントを設定
-        guard let url = URL(string: "http://localhost:3000/friends") else { return }
+        guard let url = URL(string: "http://BOBnoMacBook-Pro.local:3000/friends") else { return }
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"

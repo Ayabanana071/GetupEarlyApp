@@ -120,7 +120,7 @@ struct MathQuizView: View {
             return
         }
         
-        guard let url = URL(string: "http://localhost:3000/early_rises") else { return }
+        guard let url = URL(string: "http://BOBnoMacBook-Pro.local:3000/early_rises") else { return }
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"

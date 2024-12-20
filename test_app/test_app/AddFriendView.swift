@@ -71,7 +71,7 @@ struct AddFriendView: View {
     }
 
     func search() {
-        guard let url = URL(string: "http://localhost:3000/users?query=\(searchQuery)") else { return }
+        guard let url = URL(string: "http://BOBnoMacBook-Pro.local:3000/users?query=\(searchQuery)") else { return }
         var request = URLRequest(url: url)
         request.setValue(UserDefaults.standard.string(forKey: "token"), forHTTPHeaderField: "Authorization")
 
@@ -93,7 +93,7 @@ struct AddFriendView: View {
         }
         
         // APIエンドポイントを設定
-        guard let url = URL(string: "http://localhost:3000/friends") else { return }
+        guard let url = URL(string: "http://BOBnoMacBook-Pro.local:3000/friends") else { return }
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"

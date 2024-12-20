@@ -64,7 +64,7 @@ struct RankingGroupView: View {
             return
         }
 
-        guard let url = URL(string: "http://localhost:3000/rankings/weekly") else {
+        guard let url = URL(string: "http://BOBnoMacBook-Pro.local:3000/rankings/weekly") else {
             self.errorMessage = "無効なURLです"
             return
         }
