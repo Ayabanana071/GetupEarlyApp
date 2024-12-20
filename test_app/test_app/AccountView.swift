@@ -131,7 +131,7 @@ struct AccountView: View {
 
     func fetchUserData() {
         guard let token = UserDefaults.standard.string(forKey: "userToken"),
-              let url = URL(string: "http://localhost:3000/me") else {
+              let url = URL(string: "http://BOBnoMacBook-Pro.local:3000/me") else {
             errorMessage = "トークンが見つかりませんでした。"
             return
         }

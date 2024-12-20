@@ -13,7 +13,7 @@ func sendWakeUpTimeToServer(wakeUpTime: Date) {
         print("ログインしていないため、起床時間を作成できません")
         return
     }
-    guard let url = URL(string: "http://localhost:3000/wake_up_times") else { return }
+    guard let url = URL(string: "http://BOBnoMacBook-Pro.local:3000/wake_up_times") else { return }
 
     var request = URLRequest(url: url)
     request.httpMethod = "POST"
@@ -101,8 +101,8 @@ struct WakeUpView: View {
         .sheet(isPresented: $isQuizPresented) {
             MathQuizView()
         }
-        .padding(.horizontal, 15.0)
-        .padding()
+        .padding(.horizontal, 30.0)
+        .padding(.vertical)
         .background(Color(red: 48/255, green: 178/255, blue: 127/255))
         .foregroundColor(.white)
         .cornerRadius(30)

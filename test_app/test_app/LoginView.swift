@@ -10,6 +10,9 @@ import SwiftUI
 struct LoginView: View {
     @Binding var isLogin: Bool
     
+    @State private var searchName = ""
+    @State private var sarchPassword = ""
+    
     @State private var name = ""
     @State private var password = ""
     @State private var errorMessage = ""
@@ -27,16 +30,19 @@ struct LoginView: View {
                 TextField("名前", text: $name)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding(.horizontal)
+                    .autocapitalization(.none) // 入力フィールドの自動キャピタライズをオフ
 
                 SecureField("パスワード", text: $password)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding(.horizontal)
 
                 Button("ログイン") {
+                    searchName = name
+                    sarchPassword = password
                     login()
                 }
-                .padding(.horizontal, 15.0)
-                .padding()
+                .padding(.horizontal, 30.0)
+                .padding(.vertical)
                 .background(Color(red: 48/255, green: 178/255, blue: 127/255))
                 .foregroundColor(.white)
                 .cornerRadius(30)
@@ -58,41 +64,54 @@ struct LoginView: View {
                             .underline()
                     }
                 }
-                .padding()
+                .padding(.bottom)
             }
             .padding()
         }
     }
 
     func login() {
-        guard let url = URL(string: "http://localhost:3000/login") else { return }
+        guard let url = URL(string: "http://BOBnoMacBook-Pro.local:3000/login") else { return }
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-        let body: [String: String] = ["name": name, "password": password]
+        let body: [String: String] = ["name": searchName, "password": sarchPassword]
         request.httpBody = try? JSONSerialization.data(withJSONObject: body)
 
         URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data else { return }
             DispatchQueue.main.async {
-                if let response = response as? HTTPURLResponse, response.statusCode == 200 {
-                    do {
-                        if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-                           let token = json["token"] as? String {
-                            UserDefaults.standard.set(token, forKey: "userToken") // トークン保存
-                            isLogin = true
-                        }
-                    } catch {
-                        errorMessage = "データ解析エラー"
-                    }
-                } else {
+                if let error = error {
+                    errorMessage = "通信エラー: \(error.localizedDescription)"
+                    return
+                }
+
+                guard let response = response as? HTTPURLResponse else {
+                    errorMessage = "不明なエラー"
+                    return
+                }
+
+                guard response.statusCode == 200, let data = data else {
                     errorMessage = "ログイン失敗: 名前またはパスワードが正しくありません"
+                    return
+                }
+
+                do {
+                    if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                       let token = json["token"] as? String {
+                        UserDefaults.standard.set(token, forKey: "userToken")
+                        isLogin = true
+                    } else {
+                        errorMessage = "サーバーからのレスポンスが不正です"
+                    }
+                } catch {
+                    errorMessage = "データ解析エラー: \(error.localizedDescription)"
                 }
             }
         }.resume()
     }
+
 
 }
 

@@ -27,7 +27,7 @@ class EarlyRiseViewModel: ObservableObject {
             print("ログインしていないため、トークンが見つかりませんでした")
             return
         }
-        let url = URL(string: "http://localhost:3000/early_rises")!
+        let url = URL(string: "http://BOBnoMacBook-Pro.local:3000/early_rises")!
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.setValue(token, forHTTPHeaderField: "Authorization") // トークンを設定
@@ -58,7 +58,7 @@ class EarlyRiseViewModel: ObservableObject {
             return
         }
         
-        guard let url = URL(string: "http://localhost:3000/early_rises/total_success_count") else {
+        guard let url = URL(string: "http://BOBnoMacBook-Pro.local:3000/early_rises/total_success_count") else {
             print("Invalid URL")
             return
         }

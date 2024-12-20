@@ -121,7 +121,7 @@ class MissionViewModel: ObservableObject {
             return
         }
         
-        guard let url = URL(string: "http://localhost:3000/clear_missions") else { return }
+        guard let url = URL(string: "http://BOBnoMacBook-Pro.local:3000/clear_missions") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -149,7 +149,7 @@ class MissionViewModel: ObservableObject {
             errorMessage = "ログインしていないため、ポイントを取得できません"
             return
         }
-        guard let url = URL(string: "http://localhost:3000/clear_missions/total_clear_missions_count") else {
+        guard let url = URL(string: "http://BOBnoMacBook-Pro.local:3000/clear_missions/total_clear_missions_count") else {
             self.errorMessage = "Invalid URL"
             return
         }
